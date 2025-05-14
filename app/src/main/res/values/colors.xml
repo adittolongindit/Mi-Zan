@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Color (For Buttons and Highlighted Elements) -->
+    <color name="colorPrimary">#3F8DB6</color> <!-- Biru Terang -->
+
+    <!-- Background Gradient Colors -->
+    <color name="colorStartGradient">#1E3A58</color> <!-- Biru Gelap -->
+    <color name="colorEndGradient">#7EC4CF</color> <!-- Biru Muda -->
+
+    <!-- Text Colors -->
+    <color name="textPrimary">#FFFFFF</color> <!-- Putih -->
+    <color name="textSecondary">#B0B0B0</color> <!-- Abu-abu Terang -->
+
+    <!-- Accent Color (For Bottom Navigation and other UI elements) -->
+    <color name="colorAccent">#76B4FF</color> <!-- Biru Muda untuk Aksen -->
+
+    <!-- Card Background Color -->
+    <color name="cardBackground">#2A4360</color> <!-- Biru Gelap untuk Card -->
+
+    <!-- Categories Colors -->
+    <color name="categories_start">#1E3A8A</color> <!-- Biru Tua -->
+    <color name="categories_end">#B0BEC5</color> <!-- Abu -->
+    <color name="categories_center">#FFFF00</color> <!-- Kuning -->
+</resources>

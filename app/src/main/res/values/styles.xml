@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="MenuItemTextStyle">
+        <item name="android:textColor">@android:color/white</item>  <!-- Menentukan warna teks -->
+        <item name="android:textSize">18sp</item>  <!-- Menentukan ukuran teks -->
+<!--        <item name="android:fontFamily">@font/my_custom_font</item>  &lt;!&ndash; Menentukan font khusus &ndash;&gt;-->
+    </style>
+</resources>

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:material="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_backround">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="end"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/header_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/header_card"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/camera_button"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableTop="@drawable/ic_camera_home"
+            app:cornerRadius="12dp"
+            app:iconPadding="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profil_button"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableTop="@drawable/ic_profil_home"
+            app:cornerRadius="12dp"
+            app:iconPadding="2dp" />
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_topbar">
+
+        <LinearLayout
+            android:id="@+id/card_quotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|start"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/user_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Abu Bakar Ash Shiddiq"
+                android:textColor="@color/textPrimary"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/quote_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Pria yang pemalu dan sederhana adalah karakter yang mengagumkan, namun wanita yang pemalu dan sederhana itu lebih mengagumkan lagi."
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Time Section -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/time_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="50dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_card">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01:15 PM"
+                android:textStyle="bold"
+                android:textColor="@color/textPrimary"
+                android:textSize="34sp" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/next_prayer_carousel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Categories Section using Material Buttons -->
+
+    <!-- Bottom Navigation Bar using Material Bottom Navigation -->
+
+    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottom_navigation"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="56dp"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        app:itemGravity="center"-->
+<!--        app:itemIconGravity="start"-->
+<!--        app:itemTextColor="@android:color/black"-->
+<!--        app:itemIconSize="24dp"-->
+<!--        app:itemTextSize="12sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:menu="@menu/bottom_navigation_menu" />-->
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottom_navigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:menu="@menu/bottom_navigation_menu"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="?android:attr/windowBackground"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"/>-->
+
+
+    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+    <!--        android:id="@+id/bottom_navigation"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:menu="@menu/bottom_navigation_menu" />-->
+
+    <GridLayout
+        android:id="@+id/categories_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rounded_gradient_categoris"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:padding="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categories_text">
+
+        <!-- Tombol Doa -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical"> <!-- Mengatur bobot kolom -->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/doa_button"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:backgroundTint="@android:color/transparent"
+                android:drawableTop="@drawable/ic_doa"
+                android:text="Doa"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+        </LinearLayout>
+
+        <!-- Tombol Jadwal Sholat -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/jadwal_sholat_button"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:backgroundTint="@android:color/transparent"
+                android:drawableTop="@drawable/ic_jadwal_sholat"
+                android:text="Jadwal Sholat"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+        </LinearLayout>
+
+        <!-- Tombol Quotes -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/quotes_button"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:backgroundTint="@android:color/transparent"
+                android:drawableTop="@drawable/ic_quotes"
+                android:text="Quotes"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+        </LinearLayout>
+
+        <!-- Tombol Masjid -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/masjid_button"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:backgroundTint="@android:color/transparent"
+                android:drawableTop="@drawable/ic_masjid"
+                android:text="Masjid"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+        </LinearLayout>
+
+        <!-- Tombol Jurnal -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/jurnal_button"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:backgroundTint="@android:color/transparent"
+                android:drawableTop="@drawable/ic_jurnal"
+                android:text="Jurnal"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+        </LinearLayout>
+
+        <!-- Tombol Jurnal -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/jurnal_butto"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:backgroundTint="@android:color/transparent"
+                android:drawableTop="@drawable/ic_doa"
+                android:text="Bingung"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+        </LinearLayout>
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/categories_text"
+        android:layout_width="126dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Categories"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_card" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
