@@ -30,10 +30,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.maps_fragment, container, false);
 
-        // Inisialisasi Retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://206.189.84.169:5700/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -41,11 +39,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         masjidApi = retrofit.create(MasjidAPI.class);
 
-        // Mendapatkan SupportMapFragment dan menghubungkannya dengan peta
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(this); // Menunggu peta siap
+            mapFragment.getMapAsync(this);
         }
 
         return view;
@@ -55,33 +52,27 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Menambahkan lokasi pengguna dan masjid terdekat
         getUserLocationAndDisplayMasjid();
     }
 
     private void getUserLocationAndDisplayMasjid() {
-        // Mendapatkan lokasi pengguna menggunakan FusedLocationProviderClient
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Meminta izin runtime jika belum diberikan
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return; // Kembalikan jika izin tidak diberikan
+            return;
         }
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(getActivity(), location -> {
                     if (location != null) {
-                        // Mendapatkan latitude dan longitude pengguna
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
                         LatLng userLocation = new LatLng(latitude, longitude);
 
-                        // Menampilkan marker lokasi pengguna
                         mMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12)); // Zoom level 12
 
-                        // Memanggil API untuk mendapatkan masjid terdekat
-                        String radius = "5000"; // 5 km radius pencarian
+                        String radius = "5000";
                         masjidApi.getMasjidNearby(String.valueOf(latitude), String.valueOf(longitude), radius)
                                 .enqueue(new Callback<MasjidResponse>() {
                                     @Override
@@ -99,7 +90,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
                                     @Override
                                     public void onFailure(Call<MasjidResponse> call, Throwable t) {
-                                        t.printStackTrace(); // Menangani kesalahan jika ada
+                                        t.printStackTrace();
                                     }
                                 });
                     }

@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
             if (prayerCarousel != null && waktuSholat.length > 0) {
                 currentPage = (currentPage + 1) % waktuSholat.length;
                 prayerCarousel.setCurrentItem(currentPage, true);
-                handler.postDelayed(this, 4000); // setiap 4 detik geser
+                handler.postDelayed(this, 10000);
             }
         }
     };
@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
         NextPrayAdapter adapter = new NextPrayAdapter(waktuSholat);
         prayerCarousel.setAdapter(adapter);
 
-        handler.postDelayed(autoScrollRunnable, 4000); // Mulai auto scroll
+        handler.postDelayed(autoScrollRunnable, 4000);
 
         currentTimeTextView = view.findViewById(R.id.current_time);
         currentTimeTextView.setText(getCurrentTime());
@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    // Menghentikan auto-scroll saat fragment dihancurkan
     @Override
     public void onDestroyView() {
         super.onDestroyView();

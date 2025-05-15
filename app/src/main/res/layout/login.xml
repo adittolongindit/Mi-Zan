@@ -8,7 +8,6 @@
     android:background="@drawable/gradient_backround"
     tools:context=".MainActivity">
 
-    <!-- Header Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/header_card"
         android:layout_width="0dp"
@@ -40,7 +39,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Username Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/username_input_layout"
         android:layout_width="0dp"
@@ -61,7 +59,6 @@
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Password Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_input_layout"
         android:layout_width="0dp"
@@ -83,7 +80,6 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Login Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_button"
         android:layout_width="0dp"
@@ -99,7 +95,6 @@
         android:textSize="16sp"
         app:layout_constraintVertical_bias="0.5" />
 
-    <!-- Register Link -->
     <TextView
         android:id="@+id/register_link"
         android:layout_width="wrap_content"
