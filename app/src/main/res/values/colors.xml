@@ -24,4 +24,7 @@
     <color name="categories_start">#1E3A8A</color> <!-- Biru Tua -->
     <color name="categories_end">#B0BEC5</color> <!-- Abu -->
     <color name="categories_center">#FFFF00</color> <!-- Kuning -->
+
+
+    <color name="logout_start">#E20909</color> <!-- Biru Tua -->
 </resources>

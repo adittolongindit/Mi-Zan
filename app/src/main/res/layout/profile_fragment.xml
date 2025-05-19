@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_backround">
 
     <ImageView
         android:id="@+id/background_image"
@@ -68,26 +69,28 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_notification"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Notification"
         android:textStyle="bold"
-        android:backgroundTint="#66B3FF"
+        app:backgroundTint="@drawable/rounded_gradient_categoris"
+        android:background="@drawable/rounded_gradient_categoris"
         android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/card_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_logout"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Log Out"
         android:textStyle="bold"
-        android:backgroundTint="#66B3FF"
+        app:backgroundTint="@drawable/rounded_btn_logout"
+        android:background="@drawable/rounded_btn_logout"
         android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/btn_notification"
         app:layout_constraintStart_toStartOf="parent"
