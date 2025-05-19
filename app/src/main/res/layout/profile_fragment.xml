@@ -4,28 +4,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-    android:id="@+id/profile_title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Profile"
-    android:textSize="24sp"
-    android:textColor="@android:color/black"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginTop="16dp"
-    android:layout_marginStart="16dp" />
-
     <ImageView
-    android:id="@+id/profile_image"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:layout_marginTop="32dp"
-    android:layout_marginStart="16dp"
-    android:src="@drawable/ic_user"
-    app:layout_constraintTop_toBottomOf="@id/profile_title"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginBottom="16dp"/>
+        android:id="@+id/background_image"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profil_home"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_profile"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="-50dp"
+        android:backgroundTint="#A000BCD4"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toBottomOf="@id/background_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_profil_home"
+                android:contentDescription="icon" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kelompok 3"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profile_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alamat"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/common_google_signin_btn_icon_dark_normal"
+                android:contentDescription="arrow" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btn_notification"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        android:textStyle="bold"
+        android:backgroundTint="#66B3FF"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/card_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:textStyle="bold"
+        android:backgroundTint="#66B3FF"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/btn_notification"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
