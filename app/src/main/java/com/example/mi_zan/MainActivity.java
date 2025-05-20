@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new MapsFragment();
             } else if (item.getItemId() == R.id.item_profile) {
                 fragment = new ProfileFragment();
-            } else if (item.getItemId() == R.id.item_camera) {
-                fragment = new CameraFragment();
             }
 
             if (fragment != null) {

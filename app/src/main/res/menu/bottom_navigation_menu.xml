@@ -9,10 +9,6 @@
         android:icon="@drawable/ic_maps"
         android:title="Maps" />
     <item
-        android:id="@+id/item_camera"
-        android:icon="@drawable/ic_camera"
-        android:title="Camera" />
-    <item
         android:id="@+id/item_profile"
         android:icon="@drawable/ic_user"
         android:title="Profile" />
