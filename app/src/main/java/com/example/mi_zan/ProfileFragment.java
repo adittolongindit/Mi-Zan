@@ -6,12 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import android.content.res.Configuration;
-import android.view.View;
-import android.widget.Button;
 import androidx.appcompat.app.AppCompatDelegate;
-
 import com.google.android.material.button.MaterialButton;
-
 
 public class ProfileFragment extends Fragment {
     @Override
@@ -37,11 +33,10 @@ public class ProfileFragment extends Fragment {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
 
-            // Restart activity biar tema langsung ke-apply
             requireActivity().recreate();
         });
 
+
         return view;
     }
-
 }

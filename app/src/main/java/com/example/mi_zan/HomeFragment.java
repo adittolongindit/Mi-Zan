@@ -55,6 +55,17 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
+        Button profilButton = view.findViewById(R.id.profil_button);
+
+        profilButton.setOnClickListener(v -> {
+            Fragment profilFragment = new ProfileFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, profilFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         Button openCameraBtn = view.findViewById(R.id.camera_button);
         openCameraBtn.setOnClickListener(v -> checkCameraPermission());
 

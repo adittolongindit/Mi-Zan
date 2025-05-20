@@ -109,5 +109,4 @@
         android:gravity="center"
         android:clickable="true"
         android:textAlignment="center" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
