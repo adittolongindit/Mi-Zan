@@ -1,10 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <style name="MenuItemTextStyle">
-        <item name="android:textColor">@android:color/white</item>  <!-- Menentukan warna teks -->
-        <item name="android:textSize">18sp</item>  <!-- Menentukan ukuran teks -->
-<!--        <item name="android:fontFamily">@font/my_custom_font</item>  &lt;!&ndash; Menentukan font khusus &ndash;&gt;-->
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">18sp</item>
     </style>
+
+    <!-- Kalau mau window animation style, taruh di style Theme -->
+    <style name="AppThemeAnimationOverlay" parent="ThemeOverlay.Material3">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
+    </style>
+
 </resources>
