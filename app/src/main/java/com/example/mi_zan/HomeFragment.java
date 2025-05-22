@@ -92,14 +92,17 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
+        // pindah layar ke fullscreen
+
 //        view.findViewById(R.id.doa_button).setOnClickListener(v -> navigateFullScreen(new DoaFragment()));
         view.findViewById(R.id.jadwal_sholat_button).setOnClickListener(v -> navigateFullScreen(new JadwalSholatFragment()));
 /*        view.findViewById(R.id.quotes_button).setOnClickListener(v -> navigateFullScreen(new QuotesFragment()));
         view.findViewById(R.id.masjid_button).setOnClickListener(v -> navigateFullScreen(new MasjidFragment()));
         view.findViewById(R.id.jurnal_button).setOnClickListener(v -> navigateFullScreen(new JurnalFragment()));
         view.findViewById(R.id.jurnal_butto).setOnClickListener(v -> navigateFullScreen(new BingungFragment()));*/
-        Button openCameraBtn = view.findViewById(R.id.camera_button);
-        openCameraBtn.setOnClickListener(v -> checkCameraPermission());
+
+        cameraButton = view.findViewById(R.id.camera_button);
+        cameraButton.setOnClickListener(v -> checkCameraPermission());
 
         prayerCarousel = view.findViewById(R.id.next_prayer_carousel);
         NextPrayAdapter adapter = new NextPrayAdapter(waktuSholat);
