@@ -1,6 +1,7 @@
 package com.example.mi_zan;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -91,5 +92,24 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }*/
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof HomeFragment) {
+            showBottomNavigation();
+        }
+    }
+
+    public void hideBottomNavigation() {
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    public void showBottomNavigation() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
 }
 

@@ -50,12 +50,38 @@ public class HomeFragment extends Fragment {
         }
     };
 
+    private final Handler timeHandler = new Handler();
+    private final Runnable updateTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (currentTimeTextView != null) {
+                currentTimeTextView.setText(getCurrentTime());
+                timeHandler.postDelayed(this, 1000);
+            }
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        timeHandler.post(updateTimeRunnable);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timeHandler.removeCallbacks(updateTimeRunnable);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
         Button profilButton = view.findViewById(R.id.profil_button);
+
+        currentTimeTextView = view.findViewById(R.id.current_time);
 
         profilButton.setOnClickListener(v -> {
             Fragment profilFragment = new ProfileFragment();
@@ -66,6 +92,12 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
+//        view.findViewById(R.id.doa_button).setOnClickListener(v -> navigateFullScreen(new DoaFragment()));
+        view.findViewById(R.id.jadwal_sholat_button).setOnClickListener(v -> navigateFullScreen(new JadwalSholatFragment()));
+/*        view.findViewById(R.id.quotes_button).setOnClickListener(v -> navigateFullScreen(new QuotesFragment()));
+        view.findViewById(R.id.masjid_button).setOnClickListener(v -> navigateFullScreen(new MasjidFragment()));
+        view.findViewById(R.id.jurnal_button).setOnClickListener(v -> navigateFullScreen(new JurnalFragment()));
+        view.findViewById(R.id.jurnal_butto).setOnClickListener(v -> navigateFullScreen(new BingungFragment()));*/
         Button openCameraBtn = view.findViewById(R.id.camera_button);
         openCameraBtn.setOnClickListener(v -> checkCameraPermission());
 
@@ -74,11 +106,19 @@ public class HomeFragment extends Fragment {
         prayerCarousel.setAdapter(adapter);
 
         handler.postDelayed(autoScrollRunnable, 4000);
-
-        currentTimeTextView = view.findViewById(R.id.current_time);
-        currentTimeTextView.setText(getCurrentTime());
-
         return view;
+    }
+
+    private void navigateFullScreen(Fragment fragment) {
+        if (requireActivity() instanceof MainActivity) {
+            ((MainActivity) requireActivity()).hideBottomNavigation();
+        }
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
