@@ -9,7 +9,6 @@ public class Circle {
         this.radius = radius;
     }
 
-    // Getters (dan Setters jika perlu)
     public Center getCenter() {
         return center;
     }

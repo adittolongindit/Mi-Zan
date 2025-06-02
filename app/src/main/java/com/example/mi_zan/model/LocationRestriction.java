@@ -7,7 +7,6 @@ public class LocationRestriction {
         this.circle = circle;
     }
 
-    // Getters (dan Setters jika perlu)
     public Circle getCircle() {
         return circle;
     }

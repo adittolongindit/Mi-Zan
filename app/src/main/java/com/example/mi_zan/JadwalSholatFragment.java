@@ -1,4 +1,4 @@
-package com.example.mi_zan; // Pastikan package ini sesuai dengan struktur proyek Anda
+package com.example.mi_zan;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +27,7 @@ import com.example.mi_zan.model.JadwalItem;
 import com.example.mi_zan.model.JadwalResponse;
 import com.example.mi_zan.model.LokasiItem;
 import com.example.mi_zan.model.LokasiResponse;
-import com.example.mi_zan.model.SinglePrayerTime; // Model baru untuk tampilan per waktu sholat
+import com.example.mi_zan.model.SinglePrayerTime;
 import com.example.mi_zan.network.ApiService;
 import com.example.mi_zan.network.RetrofitClient;
 
@@ -55,8 +55,8 @@ public class JadwalSholatFragment extends Fragment {
 
     private ApiService apiService;
     private JadwalSholatAdapter jadwalSholatAdapter;
-    private List<LokasiItem> lokasiItemList = new ArrayList<>(); // Untuk spinner kota
-    private List<SinglePrayerTime> singlePrayerTimeDisplayList = new ArrayList<>(); // Untuk RecyclerView
+    private List<LokasiItem> lokasiItemList = new ArrayList<>();
+    private List<SinglePrayerTime> singlePrayerTimeDisplayList = new ArrayList<>();
     private ArrayAdapter<LokasiItem> kotaAdapter;
     private LokasiItem selectedLokasi;
 
@@ -67,7 +67,6 @@ public class JadwalSholatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.jadwal_sholat_fragment, container, false);
 
-        // Inisialisasi Views
         etSearchKota = view.findViewById(R.id.et_search_kota);
         btnSearchKota = view.findViewById(R.id.btn_search_kota);
         spinnerKota = view.findViewById(R.id.spinner_kota);
@@ -79,15 +78,12 @@ public class JadwalSholatFragment extends Fragment {
         btnToggleFilter = view.findViewById(R.id.btn_toggle_filter);
         layoutFilterContent = view.findViewById(R.id.layout_filter_content);
 
-        // Inisialisasi ApiService
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // Setup UI Components
         setupFilterToggle();
-        setupSpinners();    // Menginisialisasi adapter spinner kota
-        setupRecyclerView(); // Menginisialisasi adapter RecyclerView
+        setupSpinners();
+        setupRecyclerView();
 
-        // Set Click Listeners
         btnSearchKota.setOnClickListener(v -> {
             String keyword = etSearchKota.getText().toString().trim();
             if (keyword.isEmpty()) {
@@ -100,28 +96,22 @@ public class JadwalSholatFragment extends Fragment {
 
         btnTampilkanJadwal.setOnClickListener(v -> fetchJadwalSholat());
 
-        // Muat semua kota saat fragment pertama kali dibuat
         fetchAllKota();
 
         return view;
     }
 
     private void setupFilterToggle() {
-        // Pastikan drawable ic_arrow_down juga ada jika ingin mengganti icon
-        // btnToggleFilter.setImageResource(isFilterVisible ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
-        layoutFilterContent.setVisibility(isFilterVisible ? View.VISIBLE : View.GONE); // Set initial state
+        layoutFilterContent.setVisibility(isFilterVisible ? View.VISIBLE : View.GONE);
 
         btnToggleFilter.setOnClickListener(v -> {
             isFilterVisible = !isFilterVisible;
             layoutFilterContent.setVisibility(isFilterVisible ? View.VISIBLE : View.GONE);
-            // Ganti icon jika perlu
-            // btnToggleFilter.setImageResource(isFilterVisible ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
             Toast.makeText(getContext(), isFilterVisible ? "Filter ditampilkan" : "Filter disembunyikan", Toast.LENGTH_SHORT).show();
         });
     }
 
     private void setupSpinners() {
-        // Spinner Kota
         kotaAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, lokasiItemList);
         kotaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerKota.setAdapter(kotaAdapter);
@@ -140,7 +130,6 @@ public class JadwalSholatFragment extends Fragment {
             }
         });
 
-        // Spinner Bulan
         List<String> bulanList = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             bulanList.add(String.format(Locale.getDefault(), "%02d", i));
@@ -149,19 +138,18 @@ public class JadwalSholatFragment extends Fragment {
         bulanAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBulan.setAdapter(bulanAdapter);
         Calendar calendar = Calendar.getInstance();
-        int currentMonthIndex = calendar.get(Calendar.MONTH); // 0-11
+        int currentMonthIndex = calendar.get(Calendar.MONTH);
         spinnerBulan.setSelection(currentMonthIndex);
 
-        // Spinner Tahun
         List<String> tahunList = new ArrayList<>();
         int currentYear = calendar.get(Calendar.YEAR);
-        for (int i = currentYear - 2; i <= currentYear + 5; i++) { // Range tahun, bisa disesuaikan
+        for (int i = currentYear - 2; i <= currentYear + 5; i++) {
             tahunList.add(String.valueOf(i));
         }
         ArrayAdapter<String> tahunAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, tahunList);
         tahunAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTahun.setAdapter(tahunAdapter);
-        spinnerTahun.setSelection(tahunList.indexOf(String.valueOf(currentYear))); // Set default ke tahun saat ini
+        spinnerTahun.setSelection(tahunList.indexOf(String.valueOf(currentYear)));
     }
 
     private void setupRecyclerView() {
@@ -182,14 +170,14 @@ public class JadwalSholatFragment extends Fragment {
                         lokasiItemList.addAll(response.body().getData());
                         kotaAdapter.notifyDataSetChanged();
                         if (!lokasiItemList.isEmpty()) {
-                            spinnerKota.setSelection(0); // Pilih item pertama secara default
-                            selectedLokasi = lokasiItemList.get(0); // Update selectedLokasi juga
+                            spinnerKota.setSelection(0);
+                            selectedLokasi = lokasiItemList.get(0);
                         }
                         tvCurrentLocation.setText("Pilih kota dari daftar.");
                         Toast.makeText(getContext(), "Daftar semua kota dimuat", Toast.LENGTH_SHORT).show();
                     } else {
                         tvCurrentLocation.setText("Tidak ada data kota yang ditemukan.");
-                        kotaAdapter.notifyDataSetChanged(); // Kosongkan spinner jika tidak ada hasil
+                        kotaAdapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), "Tidak ada kota yang bisa dimuat", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -256,7 +244,7 @@ public class JadwalSholatFragment extends Fragment {
         String bulan = spinnerBulan.getSelectedItem().toString();
         String tahun = spinnerTahun.getSelectedItem().toString();
 
-        if (idKota.isEmpty() || bulan.isEmpty() || tahun.isEmpty()) { // Seharusnya tidak terjadi jika spinner terisi
+        if (idKota.isEmpty() || bulan.isEmpty() || tahun.isEmpty()) {
             Toast.makeText(getContext(), "Pastikan semua filter terisi", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -268,18 +256,16 @@ public class JadwalSholatFragment extends Fragment {
         apiService.getJadwalSholat(idKota, tahun, bulan).enqueue(new Callback<JadwalResponse>() {
             @Override
             public void onResponse(@NonNull Call<JadwalResponse> call, @NonNull Response<JadwalResponse> response) {
-                singlePrayerTimeDisplayList.clear(); // Bersihkan list sebelum diisi ulang
+                singlePrayerTimeDisplayList.clear();
 
                 if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
                     JadwalData jadwalData = response.body().getData();
 
                     if (jadwalData != null && jadwalData.getJadwal() != null && !jadwalData.getJadwal().isEmpty()) {
-                        // Transformasi data dari List<JadwalItem> ke List<SinglePrayerTime>
                         for (JadwalItem dailySchedule : jadwalData.getJadwal()) {
-                            String tanggalDisplay = dailySchedule.getTanggal(); // "Minggu, 01/06/2025"
-                            String rawDate = dailySchedule.getDate();       // "2025-06-01"
+                            String tanggalDisplay = dailySchedule.getTanggal();
+                            String rawDate = dailySchedule.getDate();
 
-                            // Tambahkan setiap waktu sholat sebagai item terpisah
                             if (dailySchedule.getImsak() != null && !dailySchedule.getImsak().isEmpty()) {
                                 singlePrayerTimeDisplayList.add(new SinglePrayerTime("Imsak", dailySchedule.getImsak(), tanggalDisplay, rawDate));
                             }
@@ -309,7 +295,7 @@ public class JadwalSholatFragment extends Fragment {
                         tvCurrentLocation.setText("Jadwal Sholat untuk: " + jadwalData.getLokasi() + " (" + jadwalData.getDaerah() + ")");
                         Toast.makeText(getContext(), "Jadwal dimuat", Toast.LENGTH_SHORT).show();
                     } else {
-                        jadwalSholatAdapter.notifyDataSetChanged(); // Pastikan list kosong ditampilkan
+                        jadwalSholatAdapter.notifyDataSetChanged();
                         tvCurrentLocation.setText("Data jadwal tidak ditemukan untuk " + selectedLokasi.getLokasi());
                         Toast.makeText(getContext(), "Data jadwal kosong", Toast.LENGTH_SHORT).show();
                     }

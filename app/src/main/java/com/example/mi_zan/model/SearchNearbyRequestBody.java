@@ -6,8 +6,6 @@ public class SearchNearbyRequestBody {
     private List<String> includedTypes;
     private int maxResultCount;
     private LocationRestriction locationRestriction;
-    // tambahkan rankPreference jika ingin mengurutkan berdasarkan jarak
-    // private String rankPreference;
 
 
     public SearchNearbyRequestBody(List<String> includedTypes, int maxResultCount, LocationRestriction locationRestriction) {
@@ -16,7 +14,6 @@ public class SearchNearbyRequestBody {
         this.locationRestriction = locationRestriction;
     }
 
-    // Getters (dan Setters jika perlu)
     public List<String> getIncludedTypes() {
         return includedTypes;
     }

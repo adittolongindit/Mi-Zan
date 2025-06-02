@@ -9,7 +9,6 @@ public class Center {
         this.longitude = longitude;
     }
 
-    // Getters (dan Setters jika perlu)
     public double getLatitude() {
         return latitude;
     }

@@ -3,8 +3,8 @@ package com.example.mi_zan.model;
 public class PlaceResult {
     private String id;
     private DisplayName displayName;
-    private String formattedAddress; // Tambahkan ini jika Anda memintanya di FieldMask
-    private PlaceLocation location; // Menggunakan PlaceLocation yang sudah ada
+    private String formattedAddress;
+    private PlaceLocation location;
 
     // Getters (dan Setters jika perlu)
     public String getId() {

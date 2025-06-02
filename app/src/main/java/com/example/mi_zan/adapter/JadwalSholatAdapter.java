@@ -1,5 +1,4 @@
-package com.example.mi_zan.adapter; // Sesuaikan dengan package Anda
-
+package com.example.mi_zan.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mi_zan.R;
-import com.example.mi_zan.model.SinglePrayerTime; // Import model baru
+import com.example.mi_zan.model.SinglePrayerTime;
 
 import java.util.List;
 
 public class JadwalSholatAdapter extends RecyclerView.Adapter<JadwalSholatAdapter.ViewHolder> {
 
-    private List<SinglePrayerTime> singlePrayerTimeList; // Menggunakan model baru
+    private List<SinglePrayerTime> singlePrayerTimeList;
     private Context context;
 
     public JadwalSholatAdapter(Context context, List<SinglePrayerTime> singlePrayerTimeList) {
@@ -38,36 +37,33 @@ public class JadwalSholatAdapter extends RecyclerView.Adapter<JadwalSholatAdapte
         SinglePrayerTime item = singlePrayerTimeList.get(position);
 
         holder.tvJudulJadwal.setText(item.getPrayerName());
-        holder.tvTanggalItemJadwal.setText(item.getDateDisplay()); // Set teks untuk tanggal
+        holder.tvTanggalItemJadwal.setText(item.getDateDisplay());
         holder.tvWaktuJadwal.setText(item.getPrayerTime());
 
-        // Update tampilan tombol berdasarkan status isActive
         if (item.isActive()) {
             holder.btnAktif.setEnabled(false);
-            holder.btnAktif.setAlpha(0.5f); // Tampak redup jika sudah aktif
+            holder.btnAktif.setAlpha(0.5f);
             holder.btnNonaktif.setEnabled(true);
             holder.btnNonaktif.setAlpha(1.0f);
         } else {
             holder.btnAktif.setEnabled(true);
             holder.btnAktif.setAlpha(1.0f);
             holder.btnNonaktif.setEnabled(false);
-            holder.btnNonaktif.setAlpha(0.5f); // Tampak redup jika sudah nonaktif
+            holder.btnNonaktif.setAlpha(0.5f);
         }
 
         holder.btnAktif.setOnClickListener(v -> {
-            if (!item.isActive()) { // Hanya aktifkan jika belum aktif
+            if (!item.isActive()) {
                 item.setActive(true);
-                notifyItemChanged(holder.getAdapterPosition()); // Refresh item ini
-                // Di sini Anda bisa menambahkan logika untuk menyimpan status (misal ke SharedPreferences)
+                notifyItemChanged(holder.getAdapterPosition());
                 Toast.makeText(context, item.getPrayerName() + " (" + item.getDateDisplay() + ") diaktifkan", Toast.LENGTH_SHORT).show();
             }
         });
 
         holder.btnNonaktif.setOnClickListener(v -> {
-            if (item.isActive()) { // Hanya nonaktifkan jika masih aktif
+            if (item.isActive()) {
                 item.setActive(false);
-                notifyItemChanged(holder.getAdapterPosition()); // Refresh item ini
-                // Di sini Anda bisa menambahkan logika untuk menyimpan status
+                notifyItemChanged(holder.getAdapterPosition());
                 Toast.makeText(context, item.getPrayerName() + " (" + item.getDateDisplay() + ") dinonaktifkan", Toast.LENGTH_SHORT).show();
             }
         });
@@ -78,7 +74,6 @@ public class JadwalSholatAdapter extends RecyclerView.Adapter<JadwalSholatAdapte
         return singlePrayerTimeList.size();
     }
 
-    // Ganti nama method atau overload untuk data baru
     public void updateData(List<SinglePrayerTime> newSinglePrayerTimeList) {
         this.singlePrayerTimeList.clear();
         this.singlePrayerTimeList.addAll(newSinglePrayerTimeList);
@@ -86,13 +81,13 @@ public class JadwalSholatAdapter extends RecyclerView.Adapter<JadwalSholatAdapte
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvJudulJadwal, tvWaktuJadwal, tvTanggalItemJadwal; // Tambahkan tvTanggalItemJadwal
+        TextView tvJudulJadwal, tvWaktuJadwal, tvTanggalItemJadwal;
         Button btnAktif, btnNonaktif;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvJudulJadwal = itemView.findViewById(R.id.judul_jadwal);
-            tvTanggalItemJadwal = itemView.findViewById(R.id.tv_tanggal_item_jadwal); // Inisialisasi TextView tanggal
+            tvTanggalItemJadwal = itemView.findViewById(R.id.tv_tanggal_item_jadwal);
             tvWaktuJadwal = itemView.findViewById(R.id.waktu_jadwal);
             btnAktif = itemView.findViewById(R.id.btn_aktif);
             btnNonaktif = itemView.findViewById(R.id.btn_nonaktif);

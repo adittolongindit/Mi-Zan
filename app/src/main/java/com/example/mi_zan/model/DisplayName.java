@@ -4,7 +4,6 @@ public class DisplayName {
     private String text;
     private String languageCode;
 
-    // Getters (dan Setters jika perlu)
     public String getText() {
         return text;
     }

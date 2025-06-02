@@ -17,7 +17,6 @@ public class LokasiItem {
         return lokasi;
     }
 
-    // Override toString() agar tampil nama lokasi di Spinner
     @Override
     public String toString() {
         return lokasi;

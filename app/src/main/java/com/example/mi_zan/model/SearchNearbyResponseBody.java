@@ -5,7 +5,6 @@ import java.util.List;
 public class SearchNearbyResponseBody {
     private List<PlaceResult> places;
 
-    // Getters (dan Setters jika perlu)
     public List<PlaceResult> getPlaces() {
         return places;
     }

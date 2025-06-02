@@ -5,7 +5,7 @@ import java.util.List;
 
 public class JadwalData {
     @SerializedName("id")
-    private String id; // API mengembalikan integer, tapi parsing sebagai String lebih aman
+    private String id;
 
     @SerializedName("lokasi")
     private String lokasi;

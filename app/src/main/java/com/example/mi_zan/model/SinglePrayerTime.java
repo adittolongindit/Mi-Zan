@@ -1,18 +1,18 @@
-package com.example.mi_zan.model; // Sesuaikan dengan package Anda
+package com.example.mi_zan.model;
 
 public class SinglePrayerTime {
-    private String prayerName; // Contoh: "Subuh", "Dzuhur"
-    private String prayerTime; // Contoh: "04:35"
-    private String dateDisplay; // Contoh: "Minggu, 01/06/2025"
-    private String rawDate;    // Contoh: "2025-06-01" (untuk referensi internal jika perlu)
-    private boolean isActive;  // Untuk status aktif/nonaktif
+    private String prayerName;
+    private String prayerTime;
+    private String dateDisplay;
+    private String rawDate;
+    private boolean isActive;
 
     public SinglePrayerTime(String prayerName, String prayerTime, String dateDisplay, String rawDate) {
         this.prayerName = prayerName;
         this.prayerTime = prayerTime;
         this.dateDisplay = dateDisplay;
         this.rawDate = rawDate;
-        this.isActive = true; // Default aktif saat pertama kali dimuat
+        this.isActive = true;
     }
 
     // Getters
@@ -36,7 +36,6 @@ public class SinglePrayerTime {
         return isActive;
     }
 
-    // Setter
     public void setActive(boolean active) {
         isActive = active;
     }
