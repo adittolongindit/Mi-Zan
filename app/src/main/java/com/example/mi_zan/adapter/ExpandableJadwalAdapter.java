@@ -25,11 +25,11 @@ import java.util.List;
 public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<PrayerScheduleDisplayItem> displayItems; // List utama yang ditampilkan
+    private List<PrayerScheduleDisplayItem> displayItems;
 
     public ExpandableJadwalAdapter(Context context, List<PrayerScheduleDisplayItem> displayItems) {
         this.context = context;
-        this.displayItems = displayItems; // Awalnya hanya berisi WeekGroup
+        this.displayItems = displayItems;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             WeekViewHolder weekViewHolder = (WeekViewHolder) holder;
             weekViewHolder.tvWeekLabel.setText(weekGroup.getWeekLabel());
             weekViewHolder.ivWeekExpandIcon.setImageResource(
-                    weekGroup.isExpanded() ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down); // Ganti icon
+                    weekGroup.isExpanded() ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
 
             weekViewHolder.itemView.setOnClickListener(v -> {
                 if (weekGroup.isExpanded()) {
@@ -80,7 +80,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             DayViewHolder dayViewHolder = (DayViewHolder) holder;
             dayViewHolder.tvDayLabel.setText(dayGroup.getDayLabel());
             dayViewHolder.ivDayExpandIcon.setImageResource(
-                    dayGroup.isExpanded() ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down); // Ganti icon
+                    dayGroup.isExpanded() ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
 
             dayViewHolder.itemView.setOnClickListener(v -> {
                 if (dayGroup.isExpanded()) {
@@ -135,13 +135,13 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             int childStartPosition = position + 1;
             displayItems.addAll(childStartPosition, weekGroup.getDayGroups());
             notifyItemRangeInserted(childStartPosition, weekGroup.getDayGroups().size());
-            notifyItemChanged(position); // Untuk update icon expand
+            notifyItemChanged(position);
         }
     }
 
     private void collapseWeek(int position, WeekGroup weekGroup) {
         List<PrayerScheduleDisplayItem> itemsToRemove = new ArrayList<>();
-        // Hapus semua anak dari week ini (DayGroup dan PrayerTimeDisplayWrapper jika ada yang terbuka)
+        // Hapus semua anak dari week ini
         int i = position + 1;
         while (i < displayItems.size()) {
             PrayerScheduleDisplayItem item = displayItems.get(i);
@@ -160,7 +160,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             displayItems.removeAll(itemsToRemove);
             notifyItemRangeRemoved(position + 1, itemsToRemove.size());
         }
-        notifyItemChanged(position); // Untuk update icon expand
+        notifyItemChanged(position);
     }
 
 
@@ -173,7 +173,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
             displayItems.addAll(childStartPosition, prayerWrappers);
             notifyItemRangeInserted(childStartPosition, prayerWrappers.size());
-            notifyItemChanged(position); // Untuk update icon expand
+            notifyItemChanged(position);
         }
     }
 
@@ -197,7 +197,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
                 notifyItemRangeRemoved(position + 1, childCount);
             }
         }
-        notifyItemChanged(position); // Untuk update icon expand
+        notifyItemChanged(position);
     }
 
 
@@ -215,7 +215,6 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    // ViewHolder untuk WeekGroup
     static class WeekViewHolder extends RecyclerView.ViewHolder {
         TextView tvWeekLabel;
         ImageView ivWeekExpandIcon;
@@ -226,7 +225,6 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    // ViewHolder untuk DayGroup
     static class DayViewHolder extends RecyclerView.ViewHolder {
         TextView tvDayLabel;
         ImageView ivDayExpandIcon;
@@ -238,7 +236,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     // ViewHolder untuk SinglePrayerTime (menggunakan layout list_item_jadwal)
-    // Ini sama dengan ViewHolder di JadwalSholatAdapter sebelumnya
+    // Ini sama dengan ViewHolder di JadwalSholatAdapter
     static class PrayerTimeViewHolder extends RecyclerView.ViewHolder {
         TextView tvJudulJadwal, tvWaktuJadwal, tvTanggalItemJadwal;
         Button btnAktif, btnNonaktif;

@@ -1,5 +1,4 @@
-package com.example.mi_zan; // Pastikan package ini sesuai dengan struktur proyek Anda
-
+package com.example.mi_zan;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mi_zan.adapter.ExpandableJadwalAdapter; // Adapter baru
+import com.example.mi_zan.adapter.ExpandableJadwalAdapter;
 import com.example.mi_zan.model.DayGroup;
 import com.example.mi_zan.model.JadwalData;
 import com.example.mi_zan.model.JadwalItem;
@@ -49,7 +48,6 @@ public class JadwalSholatFragment extends Fragment {
 
     private static final String TAG = "JadwalSholatFragment";
 
-    // Deklarasi Variabel UI
     private EditText etSearchKota;
     private Button btnSearchKota;
     private Spinner spinnerKota, spinnerBulan, spinnerTahun;
@@ -58,12 +56,10 @@ public class JadwalSholatFragment extends Fragment {
     private TextView tvCurrentLocation;
     private ImageButton btnToggleFilter;
     private LinearLayout layoutFilterContent;
-
-    // Deklarasi Variabel Lain
     private ApiService apiService;
     private ExpandableJadwalAdapter expandableJadwalAdapter;
-    private List<LokasiItem> lokasiItemList = new ArrayList<>(); // Untuk spinner kota
-    private List<PrayerScheduleDisplayItem> displayItemList = new ArrayList<>(); // Untuk RecyclerView expandable
+    private List<LokasiItem> lokasiItemList = new ArrayList<>();
+    private List<PrayerScheduleDisplayItem> displayItemList = new ArrayList<>();
     private ArrayAdapter<LokasiItem> kotaAdapter;
     private LokasiItem selectedLokasi;
     private boolean isFilterVisible = true;
@@ -73,7 +69,6 @@ public class JadwalSholatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.jadwal_sholat_fragment, container, false);
 
-        // Inisialisasi Views
         etSearchKota = view.findViewById(R.id.et_search_kota);
         btnSearchKota = view.findViewById(R.id.btn_search_kota);
         spinnerKota = view.findViewById(R.id.spinner_kota);
@@ -85,15 +80,12 @@ public class JadwalSholatFragment extends Fragment {
         btnToggleFilter = view.findViewById(R.id.btn_toggle_filter);
         layoutFilterContent = view.findViewById(R.id.layout_filter_content);
 
-        // Inisialisasi ApiService
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // Setup UI Components
         setupFilterToggle();
         setupSpinners();
         setupRecyclerView();
 
-        // Set Click Listeners
         btnSearchKota.setOnClickListener(v -> {
             String keyword = etSearchKota.getText().toString().trim();
             if (keyword.isEmpty()) {
@@ -106,7 +98,6 @@ public class JadwalSholatFragment extends Fragment {
 
         btnTampilkanJadwal.setOnClickListener(v -> fetchJadwalSholat());
 
-        // Muat semua kota saat fragment pertama kali dibuat
         fetchAllKota();
 
         return view;
@@ -145,7 +136,6 @@ public class JadwalSholatFragment extends Fragment {
             }
         });
 
-        // Spinner Bulan
         List<String> bulanList = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             bulanList.add(String.format(Locale.getDefault(), "%02d", i));
@@ -157,7 +147,6 @@ public class JadwalSholatFragment extends Fragment {
         int currentMonthIndex = calendar.get(Calendar.MONTH);
         spinnerBulan.setSelection(currentMonthIndex);
 
-        // Spinner Tahun
         List<String> tahunList = new ArrayList<>();
         int currentYear = calendar.get(Calendar.YEAR);
         for (int i = currentYear - 2; i <= currentYear + 5; i++) {
@@ -191,7 +180,7 @@ public class JadwalSholatFragment extends Fragment {
                             selectedLokasi = lokasiItemList.get(0);
                         }
                         tvCurrentLocation.setText("Pilih kota dari daftar.");
-                        // Toast.makeText(getContext(), "Daftar semua kota dimuat", Toast.LENGTH_SHORT).show(); // Optional
+                        // Toast.makeText(getContext(), "Daftar semua kota dimuat", Toast.LENGTH_SHORT).show();
                     } else {
                         tvCurrentLocation.setText("Tidak ada data kota yang ditemukan.");
                         kotaAdapter.notifyDataSetChanged();
@@ -229,7 +218,7 @@ public class JadwalSholatFragment extends Fragment {
                             selectedLokasi = lokasiItemList.get(0);
                         }
                         tvCurrentLocation.setText("Pilih lokasi dari hasil pencarian.");
-                        // Toast.makeText(getContext(), "Pilih kota dari daftar hasil pencarian", Toast.LENGTH_SHORT).show(); // Optional
+                        // Toast.makeText(getContext(), "Pilih kota dari daftar hasil pencarian", Toast.LENGTH_SHORT).show();
                     } else {
                         tvCurrentLocation.setText("Lokasi '" + keyword + "' tidak ditemukan.");
                         kotaAdapter.notifyDataSetChanged();
@@ -317,8 +306,7 @@ public class JadwalSholatFragment extends Fragment {
             return weekGroups;
         }
 
-        // Urutkan jadwal berdasarkan tanggal mentah (YYYY-MM-DD) untuk memastikan urutan benar
-        // Jika JadwalItem.getDate() mengembalikan String "YYYY-MM-DD"
+        // Urutkan jadwal berdasarkan tanggal default
         Collections.sort(dailySchedules, Comparator.comparing(JadwalItem::getDate));
 
         int weekCounter = 1;
@@ -327,9 +315,8 @@ public class JadwalSholatFragment extends Fragment {
         for (int i = 0; i < dailySchedules.size(); i++) {
             JadwalItem dailySchedule = dailySchedules.get(i);
 
-            // Membuat grup minggu baru setiap 7 hari atau di item pertama
             if (i % 7 == 0) {
-                String startDateDisplay = dailySchedule.getTanggal().split(", ")[1]; // Ambil dd/MM/yyyy dari "NamaHari, dd/MM/yyyy"
+                String startDateDisplay = dailySchedule.getTanggal().split(", ")[1];
                 String endDateDisplay;
                 int endOfWeekIndex = Math.min(i + 6, dailySchedules.size() - 1);
                 endDateDisplay = dailySchedules.get(endOfWeekIndex).getTanggal().split(", ")[1];
@@ -342,7 +329,6 @@ public class JadwalSholatFragment extends Fragment {
             if (currentWeekGroup != null) {
                 DayGroup dayGroup = new DayGroup(dailySchedule.getTanggal(), dailySchedule.getDate());
 
-                // Tambahkan semua waktu sholat ke DayGroup
                 if (dailySchedule.getImsak() != null && !dailySchedule.getImsak().isEmpty())
                     dayGroup.addPrayerTime(new SinglePrayerTime("Imsak", dailySchedule.getImsak(), dailySchedule.getTanggal(), dailySchedule.getDate()));
                 if (dailySchedule.getSubuh() != null && !dailySchedule.getSubuh().isEmpty())
