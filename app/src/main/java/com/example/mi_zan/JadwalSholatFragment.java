@@ -14,13 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mi_zan.adapter.JadwalSholatAdapter;
 import com.example.mi_zan.model.JadwalData;
 import com.example.mi_zan.model.JadwalItem;
@@ -30,12 +28,10 @@ import com.example.mi_zan.model.LokasiResponse;
 import com.example.mi_zan.model.SinglePrayerTime;
 import com.example.mi_zan.network.ApiService;
 import com.example.mi_zan.network.RetrofitClient;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
