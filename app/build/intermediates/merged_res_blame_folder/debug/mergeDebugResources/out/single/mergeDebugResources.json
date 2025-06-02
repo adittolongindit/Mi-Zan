@@ -1,0 +1,266 @@
+[
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/menu_bottom_navigation_menu.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/menu/bottom_navigation_menu.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_home.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_home.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_jadwal_sholat_fragment.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/jadwal_sholat_fragment.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_rounded_gradient_categoris.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/rounded_gradient_categoris.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxhdpi_ic_logo_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxhdpi/ic_logo_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_logo_background.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_logo_background.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_gradient_categories.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/gradient_categories.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_camera_fragment.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/camera_fragment.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_arrow_up.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_arrow_up.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_camera.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_camera.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxxhdpi_ic_logo_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxxhdpi/ic_logo_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_camera_home.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_camera_home.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/anim_bottom_navigation_translate.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/anim/bottom_navigation_translate.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_activity_main.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_bottom_navigation_backround.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/bottom_navigation_backround.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxhdpi_ic_logo.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxhdpi/ic_logo.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_masjid.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_masjid.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_doa.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_doa.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_jurnal.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_jurnal.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/anim_keluar_ke_kanan.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/anim/keluar_ke_kanan.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxxhdpi_ic_logo.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxxhdpi/ic_logo.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-hdpi_ic_logo_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-hdpi/ic_logo_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xhdpi_ic_logo_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xhdpi/ic_logo_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_profile_fragment.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/profile_fragment.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_item_next_sholat.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/item_next_sholat.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_logo_foreground.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_logo_foreground.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_maps.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_maps.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-hdpi_ic_logo.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-hdpi/ic_logo.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_quotes.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_quotes.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xhdpi_ic_logo.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xhdpi/ic_logo.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/anim_keluar_ke_kiri.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/anim/keluar_ke_kiri.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-mdpi_ic_logo_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-mdpi/ic_logo_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_arrow_down.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_arrow_down.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_profil_home.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_profil_home.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/anim_masuk_dari_kanan.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/anim/masuk_dari_kanan.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_list_item_jadwal.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/list_item_jadwal.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_gradient_card.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/gradient_card.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/xml_backup_rules.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_login.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/login.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/anim_fade_in_out.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/anim/fade_in_out.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-anydpi-v26_ic_logo_round.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-anydpi-v26/ic_logo_round.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_maps_fragment.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/maps_fragment.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_home_fragment.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/home_fragment.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/anim_masuk_dari_kiri.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/anim/masuk_dari_kiri.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_gradient_backround.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/gradient_backround.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_jadwal_sholat.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_jadwal_sholat.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-anydpi-v26_ic_logo.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-anydpi-v26/ic_logo.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_rounded_btn_logout.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/rounded_btn_logout.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_list_jadwal_sholat.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/list_jadwal_sholat.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/drawable_ic_user.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/drawable/ic_user.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-mdpi_ic_logo.webp.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-mdpi/ic_logo.webp"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    }
+]
