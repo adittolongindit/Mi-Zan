@@ -2884,6 +2884,8 @@ id item_home
 id item_maps
 id item_profile
 id item_touch_helper_previous_elevation
+id iv_day_expand_icon
+id iv_week_expand_icon
 id jadwal_sholat_button
 id judul_jadwal
 id jumpToEnd
@@ -3144,7 +3146,9 @@ id transition_scene_layoutid_cache
 id transition_transform
 id triangle
 id tv_current_location_myquran
+id tv_day_label
 id tv_tanggal_item_jadwal
+id tv_week_label
 id unchecked
 id uniform
 id unlabeled
@@ -3283,7 +3287,9 @@ layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
 layout item_next_sholat
 layout jadwal_sholat_fragment
+layout list_item_day_group
 layout list_item_jadwal
+layout list_item_week_group
 layout list_jadwal_sholat
 layout login
 layout m3_alert_dialog

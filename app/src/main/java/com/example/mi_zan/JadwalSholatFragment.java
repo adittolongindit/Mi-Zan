@@ -1,4 +1,4 @@
-package com.example.mi_zan;
+package com.example.mi_zan; // Pastikan package ini sesuai dengan struktur proyek Anda
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,24 +14,33 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.mi_zan.adapter.JadwalSholatAdapter;
+
+import com.example.mi_zan.adapter.ExpandableJadwalAdapter; // Adapter baru
+import com.example.mi_zan.model.DayGroup;
 import com.example.mi_zan.model.JadwalData;
 import com.example.mi_zan.model.JadwalItem;
 import com.example.mi_zan.model.JadwalResponse;
 import com.example.mi_zan.model.LokasiItem;
 import com.example.mi_zan.model.LokasiResponse;
+import com.example.mi_zan.model.PrayerScheduleDisplayItem;
 import com.example.mi_zan.model.SinglePrayerTime;
+import com.example.mi_zan.model.WeekGroup;
 import com.example.mi_zan.network.ApiService;
 import com.example.mi_zan.network.RetrofitClient;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +49,7 @@ public class JadwalSholatFragment extends Fragment {
 
     private static final String TAG = "JadwalSholatFragment";
 
+    // Deklarasi Variabel UI
     private EditText etSearchKota;
     private Button btnSearchKota;
     private Spinner spinnerKota, spinnerBulan, spinnerTahun;
@@ -49,13 +59,13 @@ public class JadwalSholatFragment extends Fragment {
     private ImageButton btnToggleFilter;
     private LinearLayout layoutFilterContent;
 
+    // Deklarasi Variabel Lain
     private ApiService apiService;
-    private JadwalSholatAdapter jadwalSholatAdapter;
-    private List<LokasiItem> lokasiItemList = new ArrayList<>();
-    private List<SinglePrayerTime> singlePrayerTimeDisplayList = new ArrayList<>();
+    private ExpandableJadwalAdapter expandableJadwalAdapter;
+    private List<LokasiItem> lokasiItemList = new ArrayList<>(); // Untuk spinner kota
+    private List<PrayerScheduleDisplayItem> displayItemList = new ArrayList<>(); // Untuk RecyclerView expandable
     private ArrayAdapter<LokasiItem> kotaAdapter;
     private LokasiItem selectedLokasi;
-
     private boolean isFilterVisible = true;
 
     @Nullable
@@ -63,6 +73,7 @@ public class JadwalSholatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.jadwal_sholat_fragment, container, false);
 
+        // Inisialisasi Views
         etSearchKota = view.findViewById(R.id.et_search_kota);
         btnSearchKota = view.findViewById(R.id.btn_search_kota);
         spinnerKota = view.findViewById(R.id.spinner_kota);
@@ -74,12 +85,15 @@ public class JadwalSholatFragment extends Fragment {
         btnToggleFilter = view.findViewById(R.id.btn_toggle_filter);
         layoutFilterContent = view.findViewById(R.id.layout_filter_content);
 
+        // Inisialisasi ApiService
         apiService = RetrofitClient.getClient().create(ApiService.class);
 
+        // Setup UI Components
         setupFilterToggle();
         setupSpinners();
         setupRecyclerView();
 
+        // Set Click Listeners
         btnSearchKota.setOnClickListener(v -> {
             String keyword = etSearchKota.getText().toString().trim();
             if (keyword.isEmpty()) {
@@ -92,6 +106,7 @@ public class JadwalSholatFragment extends Fragment {
 
         btnTampilkanJadwal.setOnClickListener(v -> fetchJadwalSholat());
 
+        // Muat semua kota saat fragment pertama kali dibuat
         fetchAllKota();
 
         return view;
@@ -99,15 +114,19 @@ public class JadwalSholatFragment extends Fragment {
 
     private void setupFilterToggle() {
         layoutFilterContent.setVisibility(isFilterVisible ? View.VISIBLE : View.GONE);
+        btnToggleFilter.setImageResource(isFilterVisible ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+
 
         btnToggleFilter.setOnClickListener(v -> {
             isFilterVisible = !isFilterVisible;
             layoutFilterContent.setVisibility(isFilterVisible ? View.VISIBLE : View.GONE);
+            btnToggleFilter.setImageResource(isFilterVisible ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
             Toast.makeText(getContext(), isFilterVisible ? "Filter ditampilkan" : "Filter disembunyikan", Toast.LENGTH_SHORT).show();
         });
     }
 
     private void setupSpinners() {
+        // Spinner Kota
         kotaAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, lokasiItemList);
         kotaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerKota.setAdapter(kotaAdapter);
@@ -126,6 +145,7 @@ public class JadwalSholatFragment extends Fragment {
             }
         });
 
+        // Spinner Bulan
         List<String> bulanList = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
             bulanList.add(String.format(Locale.getDefault(), "%02d", i));
@@ -137,6 +157,7 @@ public class JadwalSholatFragment extends Fragment {
         int currentMonthIndex = calendar.get(Calendar.MONTH);
         spinnerBulan.setSelection(currentMonthIndex);
 
+        // Spinner Tahun
         List<String> tahunList = new ArrayList<>();
         int currentYear = calendar.get(Calendar.YEAR);
         for (int i = currentYear - 2; i <= currentYear + 5; i++) {
@@ -149,9 +170,9 @@ public class JadwalSholatFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        jadwalSholatAdapter = new JadwalSholatAdapter(getContext(), singlePrayerTimeDisplayList);
+        expandableJadwalAdapter = new ExpandableJadwalAdapter(getContext(), displayItemList);
         rvJadwalSholat.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvJadwalSholat.setAdapter(jadwalSholatAdapter);
+        rvJadwalSholat.setAdapter(expandableJadwalAdapter);
     }
 
     private void fetchAllKota() {
@@ -170,7 +191,7 @@ public class JadwalSholatFragment extends Fragment {
                             selectedLokasi = lokasiItemList.get(0);
                         }
                         tvCurrentLocation.setText("Pilih kota dari daftar.");
-                        Toast.makeText(getContext(), "Daftar semua kota dimuat", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getContext(), "Daftar semua kota dimuat", Toast.LENGTH_SHORT).show(); // Optional
                     } else {
                         tvCurrentLocation.setText("Tidak ada data kota yang ditemukan.");
                         kotaAdapter.notifyDataSetChanged();
@@ -178,7 +199,7 @@ public class JadwalSholatFragment extends Fragment {
                     }
                 } else {
                     tvCurrentLocation.setText("Gagal memuat daftar kota.");
-                    Toast.makeText(getContext(), "Gagal memuat daftar kota: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Gagal memuat daftar kota: " + (response.message().isEmpty() ? response.code() : response.message()), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Fetch All Kota Error: " + response.code() + " - " + response.message());
                 }
             }
@@ -208,15 +229,15 @@ public class JadwalSholatFragment extends Fragment {
                             selectedLokasi = lokasiItemList.get(0);
                         }
                         tvCurrentLocation.setText("Pilih lokasi dari hasil pencarian.");
-                        Toast.makeText(getContext(), "Pilih kota dari daftar hasil pencarian", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getContext(), "Pilih kota dari daftar hasil pencarian", Toast.LENGTH_SHORT).show(); // Optional
                     } else {
                         tvCurrentLocation.setText("Lokasi '" + keyword + "' tidak ditemukan.");
-                        kotaAdapter.notifyDataSetChanged(); // Kosongkan spinner jika tidak ada hasil
+                        kotaAdapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), "Kota tidak ditemukan", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     tvCurrentLocation.setText("Gagal mencari lokasi.");
-                    Toast.makeText(getContext(), "Gagal mencari kota: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Gagal mencari kota: " + (response.message().isEmpty() ? response.code() : response.message()), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Search Kota Error: " + response.code() + " - " + response.message());
                 }
             }
@@ -252,53 +273,23 @@ public class JadwalSholatFragment extends Fragment {
         apiService.getJadwalSholat(idKota, tahun, bulan).enqueue(new Callback<JadwalResponse>() {
             @Override
             public void onResponse(@NonNull Call<JadwalResponse> call, @NonNull Response<JadwalResponse> response) {
-                singlePrayerTimeDisplayList.clear();
-
                 if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
                     JadwalData jadwalData = response.body().getData();
-
                     if (jadwalData != null && jadwalData.getJadwal() != null && !jadwalData.getJadwal().isEmpty()) {
-                        for (JadwalItem dailySchedule : jadwalData.getJadwal()) {
-                            String tanggalDisplay = dailySchedule.getTanggal();
-                            String rawDate = dailySchedule.getDate();
+                        List<WeekGroup> weekGroups = groupJadwalDataIntoWeeks(jadwalData.getJadwal());
+                        expandableJadwalAdapter.updateData(weekGroups);
 
-                            if (dailySchedule.getImsak() != null && !dailySchedule.getImsak().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Imsak", dailySchedule.getImsak(), tanggalDisplay, rawDate));
-                            }
-                            if (dailySchedule.getSubuh() != null && !dailySchedule.getSubuh().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Subuh", dailySchedule.getSubuh(), tanggalDisplay, rawDate));
-                            }
-                            if (dailySchedule.getTerbit() != null && !dailySchedule.getTerbit().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Terbit", dailySchedule.getTerbit(), tanggalDisplay, rawDate));
-                            }
-                            if (dailySchedule.getDhuha() != null && !dailySchedule.getDhuha().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Dhuha", dailySchedule.getDhuha(), tanggalDisplay, rawDate));
-                            }
-                            if (dailySchedule.getDzuhur() != null && !dailySchedule.getDzuhur().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Dzuhur", dailySchedule.getDzuhur(), tanggalDisplay, rawDate));
-                            }
-                            if (dailySchedule.getAshar() != null && !dailySchedule.getAshar().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Ashar", dailySchedule.getAshar(), tanggalDisplay, rawDate));
-                            }
-                            if (dailySchedule.getMaghrib() != null && !dailySchedule.getMaghrib().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Maghrib", dailySchedule.getMaghrib(), tanggalDisplay, rawDate));
-                            }
-                            if (dailySchedule.getIsya() != null && !dailySchedule.getIsya().isEmpty()) {
-                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Isya", dailySchedule.getIsya(), tanggalDisplay, rawDate));
-                            }
-                        }
-                        jadwalSholatAdapter.notifyDataSetChanged();
                         tvCurrentLocation.setText("Jadwal Sholat untuk: " + jadwalData.getLokasi() + " (" + jadwalData.getDaerah() + ")");
                         Toast.makeText(getContext(), "Jadwal dimuat", Toast.LENGTH_SHORT).show();
                     } else {
-                        jadwalSholatAdapter.notifyDataSetChanged();
+                        expandableJadwalAdapter.updateData(null);
                         tvCurrentLocation.setText("Data jadwal tidak ditemukan untuk " + selectedLokasi.getLokasi());
                         Toast.makeText(getContext(), "Data jadwal kosong", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    jadwalSholatAdapter.notifyDataSetChanged();
+                    expandableJadwalAdapter.updateData(null);
                     tvCurrentLocation.setText("Gagal memuat jadwal untuk " + selectedLokasi.getLokasi());
-                    Toast.makeText(getContext(), "Gagal memuat jadwal: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Gagal memuat jadwal: " + (response.message().isEmpty() ? response.code() : response.message()), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Fetch Jadwal Error: " + response.code() + " - " + response.message());
                     try {
                         if (response.errorBody() != null) {
@@ -312,12 +303,66 @@ public class JadwalSholatFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<JadwalResponse> call, @NonNull Throwable t) {
-                singlePrayerTimeDisplayList.clear();
-                jadwalSholatAdapter.notifyDataSetChanged();
+                expandableJadwalAdapter.updateData(null);
                 tvCurrentLocation.setText("Error: " + t.getMessage());
                 Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e(TAG, "Fetch Jadwal Failure: ", t);
             }
         });
+    }
+
+    private List<WeekGroup> groupJadwalDataIntoWeeks(List<JadwalItem> dailySchedules) {
+        List<WeekGroup> weekGroups = new ArrayList<>();
+        if (dailySchedules == null || dailySchedules.isEmpty()) {
+            return weekGroups;
+        }
+
+        // Urutkan jadwal berdasarkan tanggal mentah (YYYY-MM-DD) untuk memastikan urutan benar
+        // Jika JadwalItem.getDate() mengembalikan String "YYYY-MM-DD"
+        Collections.sort(dailySchedules, Comparator.comparing(JadwalItem::getDate));
+
+        int weekCounter = 1;
+        WeekGroup currentWeekGroup = null;
+
+        for (int i = 0; i < dailySchedules.size(); i++) {
+            JadwalItem dailySchedule = dailySchedules.get(i);
+
+            // Membuat grup minggu baru setiap 7 hari atau di item pertama
+            if (i % 7 == 0) {
+                String startDateDisplay = dailySchedule.getTanggal().split(", ")[1]; // Ambil dd/MM/yyyy dari "NamaHari, dd/MM/yyyy"
+                String endDateDisplay;
+                int endOfWeekIndex = Math.min(i + 6, dailySchedules.size() - 1);
+                endDateDisplay = dailySchedules.get(endOfWeekIndex).getTanggal().split(", ")[1];
+
+                currentWeekGroup = new WeekGroup("Minggu ke-" + weekCounter + " (" + startDateDisplay + " - " + endDateDisplay + ")");
+                weekGroups.add(currentWeekGroup);
+                weekCounter++;
+            }
+
+            if (currentWeekGroup != null) {
+                DayGroup dayGroup = new DayGroup(dailySchedule.getTanggal(), dailySchedule.getDate());
+
+                // Tambahkan semua waktu sholat ke DayGroup
+                if (dailySchedule.getImsak() != null && !dailySchedule.getImsak().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Imsak", dailySchedule.getImsak(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+                if (dailySchedule.getSubuh() != null && !dailySchedule.getSubuh().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Subuh", dailySchedule.getSubuh(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+                if (dailySchedule.getTerbit() != null && !dailySchedule.getTerbit().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Terbit", dailySchedule.getTerbit(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+                if (dailySchedule.getDhuha() != null && !dailySchedule.getDhuha().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Dhuha", dailySchedule.getDhuha(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+                if (dailySchedule.getDzuhur() != null && !dailySchedule.getDzuhur().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Dzuhur", dailySchedule.getDzuhur(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+                if (dailySchedule.getAshar() != null && !dailySchedule.getAshar().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Ashar", dailySchedule.getAshar(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+                if (dailySchedule.getMaghrib() != null && !dailySchedule.getMaghrib().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Maghrib", dailySchedule.getMaghrib(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+                if (dailySchedule.getIsya() != null && !dailySchedule.getIsya().isEmpty())
+                    dayGroup.addPrayerTime(new SinglePrayerTime("Isya", dailySchedule.getIsya(), dailySchedule.getTanggal(), dailySchedule.getDate()));
+
+                currentWeekGroup.addDayGroup(dayGroup);
+            }
+        }
+        return weekGroups;
     }
 }
