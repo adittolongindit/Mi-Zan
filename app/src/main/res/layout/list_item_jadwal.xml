@@ -2,7 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_item_jadwal" android:layout_width="match_parent"
+    android:id="@+id/card_item_jadwal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginTop="8dp"
@@ -31,19 +32,28 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/judul_jadwal"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/judul_jadwal" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Judul Jadwal"
-                    android:textColor="@android:color/black" android:textSize="18sp"
+                    tools:text="Subuh"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/waktu_jadwal"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_tanggal_item_jadwal" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Waktu Jadwal"
-                    android:textColor="@android:color/black" android:textSize="14sp" />
+                    tools:text="Minggu, 01/06/2025"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp"/>
+
+                <TextView
+                    android:id="@+id/waktu_jadwal" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="04:25"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -51,8 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:gravity="end">
+            android:layout_marginTop="12dp" android:gravity="end">
 
             <Button
                 android:id="@+id/btn_nonaktif"

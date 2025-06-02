@@ -7,20 +7,24 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.mi_zan.api.waktusholat.DataJadwalSholatApi;
-import com.example.mi_zan.api.waktusholat.DataJadwalSholatResponseApi;
-import com.example.mi_zan.api.waktusholat.WaktuJadwalSholatApi;
-// import com.example.mi_zan.api.waktusholat.WaktuSholatApiKotaItem; // Tidak terpakai secara langsung di ViewModel
-import com.example.mi_zan.api.waktusholat.WaktuSholatApiRetrofitClient;
-import com.example.mi_zan.api.waktusholat.WaktuSholatApiService;
-import com.example.mi_zan.api.waktusholat.WaktuSholatKotaResponseApi;
+// Model dan Service untuk MyQuran API
+import com.example.mi_zan.api.myquran.MyQuranApiResponse;
+import com.example.mi_zan.api.myquran.MyQuranApiService;
+import com.example.mi_zan.api.myquran.MyQuranApiRetrofitClient;
+import com.example.mi_zan.api.myquran.MyQuranDataObject;
+import com.example.mi_zan.api.myquran.MyQuranJadwalActual;
+
+// Model dan Service untuk Wilayah ID API
 import com.example.mi_zan.api.wilayah.WilayahIdApiService;
 import com.example.mi_zan.api.wilayah.WilayahIdRetrofitClient;
 import com.example.mi_zan.model.RegionItem;
-import com.example.mi_zan.model.WaktuSholatItem;
 import com.example.mi_zan.api.wilayah.WilayahIdDataItem;
 import com.example.mi_zan.api.wilayah.WilayahIdProvincesResponse;
 import com.example.mi_zan.api.wilayah.WilayahIdRegenciesResponse;
+
+// Model UI
+import com.example.mi_zan.model.WaktuSholatItem;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,9 +40,13 @@ import retrofit2.Response;
 
 public class JadwalSholatViewModel extends ViewModel {
     private static final String TAG = "JadwalSholatVM";
+    // Ganti dengan ID kota default untuk api.myquran.com, misal "1632" untuk Kota Kediri
+    // Anda perlu mencari cara untuk mendapatkan ID ini jika ingin dinamis,
+    // karena API MyQuran tidak menyediakan pencarian ID berdasarkan nama kota.
+    private static final String DEFAULT_MYQURAN_CITY_ID = "1632";
 
     private final WilayahIdApiService wilayahIdApiService;
-    private final WaktuSholatApiService waktuSholatApiService;
+    private final MyQuranApiService myQuranApiService; // Menggunakan service API MyQuran
 
     private final MutableLiveData<List<RegionItem>> provinsi = new MutableLiveData<>();
     private final MutableLiveData<List<RegionItem>> kota = new MutableLiveData<>();
@@ -47,16 +55,16 @@ public class JadwalSholatViewModel extends ViewModel {
     private final MutableLiveData<List<WaktuSholatItem>> jadwalSholat = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private final MutableLiveData<String> currentLokasiMyQuran = new MutableLiveData<>(); // Untuk lokasi dari MyQuran API
 
     public final MutableLiveData<RegionItem> selectedProvince = new MutableLiveData<>();
     public final MutableLiveData<RegionItem> selectedCity = new MutableLiveData<>();
-    private final MutableLiveData<String> selectedWaktuSholatApiCityId = new MutableLiveData<>();
     public final MutableLiveData<String> selectedBulanValue = new MutableLiveData<>();
     public final MutableLiveData<String> selectedTahunValue = new MutableLiveData<>();
 
     public JadwalSholatViewModel() {
         wilayahIdApiService = WilayahIdRetrofitClient.getApiService();
-        waktuSholatApiService = WaktuSholatApiRetrofitClient.getApiService();
+        myQuranApiService = MyQuranApiRetrofitClient.getApiService(); // Inisialisasi service MyQuran
         loadInitialFilterData();
     }
 
@@ -67,9 +75,9 @@ public class JadwalSholatViewModel extends ViewModel {
     public LiveData<List<WaktuSholatItem>> getPrayerSchedule() { return jadwalSholat; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }
     public LiveData<String> getErrorMessage() { return errorMessage; }
-    public LiveData<String> getSelectedWaktuSholatApiCityId() { return selectedWaktuSholatApiCityId; }
+    public LiveData<String> getCurrentLokasiMyQuran() { return currentLokasiMyQuran; }
 
-    // Metode untuk membersihkan pesan error
+
     public void clearErrorMessage() {
         errorMessage.setValue(null);
     }
@@ -90,6 +98,8 @@ public class JadwalSholatViewModel extends ViewModel {
         selectedBulanValue.setValue(String.format(Locale.US, "%02d", calendar.get(Calendar.MONTH) + 1));
 
         fetchProvinces();
+        // Langsung fetch jadwal sholat untuk ID default dan tanggal/bulan/tahun saat ini
+        fetchPrayerTimesMyQuran();
     }
 
     public void fetchProvinces() {
@@ -110,13 +120,13 @@ public class JadwalSholatViewModel extends ViewModel {
                             if (kota.getValue() == null || kota.getValue().isEmpty()) {
                                 fetchCitiesForProvince(provinceItems.get(0).getId());
                             } else {
-                                isLoading.setValue(false);
+                                // isLoading.setValue(false); // Akan dihandle oleh fetchPrayerTimesMyQuran jika ini adalah load awal
                             }
                         }
                     } else {
                         provinsi.setValue(new ArrayList<>());
                         kota.setValue(new ArrayList<>());
-                        jadwalSholat.setValue(new ArrayList<>());
+                        // jadwalSholat.setValue(new ArrayList<>()); // Jadwal dari MyQuran, tidak terpengaruh langsung
                         isLoading.setValue(false);
                     }
                 } else {
@@ -124,7 +134,6 @@ public class JadwalSholatViewModel extends ViewModel {
                     Log.e(TAG, "Gagal mengambil provinsi: " + response.code() + " - " + response.message());
                     provinsi.setValue(new ArrayList<>());
                     kota.setValue(new ArrayList<>());
-                    jadwalSholat.setValue(new ArrayList<>());
                     isLoading.setValue(false);
                 }
             }
@@ -135,7 +144,6 @@ public class JadwalSholatViewModel extends ViewModel {
                 Log.e(TAG, "Error API Provinsi WilayahId: ", t);
                 provinsi.setValue(new ArrayList<>());
                 kota.setValue(new ArrayList<>());
-                jadwalSholat.setValue(new ArrayList<>());
                 isLoading.setValue(false);
             }
         });
@@ -145,12 +153,10 @@ public class JadwalSholatViewModel extends ViewModel {
         if (provinceId == null) {
             kota.setValue(new ArrayList<>());
             selectedCity.setValue(null);
-            selectedWaktuSholatApiCityId.setValue(null);
-            jadwalSholat.setValue(new ArrayList<>());
             isLoading.setValue(false);
             return;
         }
-        isLoading.setValue(true);
+        isLoading.setValue(true); // Set true karena ini adalah operasi jaringan baru
         wilayahIdApiService.getRegencies(provinceId).enqueue(new Callback<WilayahIdRegenciesResponse>() {
             @Override
             public void onResponse(@NonNull Call<WilayahIdRegenciesResponse> call, @NonNull Response<WilayahIdRegenciesResponse> response) {
@@ -163,27 +169,26 @@ public class JadwalSholatViewModel extends ViewModel {
                     if (!cityItems.isEmpty()) {
                         if (selectedCity.getValue() == null || !Objects.equals(selectedCity.getValue().getId(), cityItems.get(0).getId())) {
                             selectedCity.setValue(cityItems.get(0));
-                        } else {
-                            if (selectedWaktuSholatApiCityId.getValue() == null) {
-                                fetchPrayerTimeApiCityId(cityItems.get(0).getName());
-                            } else {
-                                isLoading.setValue(false);
-                            }
                         }
                     } else {
                         kota.setValue(new ArrayList<>());
                         selectedCity.setValue(null);
-                        selectedWaktuSholatApiCityId.setValue(null);
-                        jadwalSholat.setValue(new ArrayList<>());
-                        isLoading.setValue(false);
                     }
                 } else {
                     errorMessage.setValue("Gagal mengambil data kota.");
                     Log.e(TAG, "Gagal mengambil kota: " + response.code() + " - " + response.message());
                     kota.setValue(new ArrayList<>());
                     selectedCity.setValue(null);
-                    selectedWaktuSholatApiCityId.setValue(null);
-                    jadwalSholat.setValue(new ArrayList<>());
+                }
+                // isLoading akan dihandle oleh fetchPrayerTimesMyQuran jika ini adalah load awal.
+                // Jika ini adalah pemanggilan terpisah, kita mungkin perlu set isLoading false di sini.
+                // Untuk saat ini, asumsikan fetchPrayerTimesMyQuran akan selalu dipanggil setelah filter berubah.
+                if (isLoading.getValue() != null && isLoading.getValue() && (jadwalSholat.getValue() != null && !jadwalSholat.getValue().isEmpty())) {
+                    // Jika jadwal sudah ada, dan ini hanya update kota, matikan loading
+                    // isLoading.setValue(false); // Ini bisa terlalu cepat jika fetchPrayerTimesMyQuran belum selesai
+                }
+                // Jika tidak ada jadwal yang akan di-fetch setelah ini, set isLoading false
+                if (selectedBulanValue.getValue() == null || selectedTahunValue.getValue() == null) {
                     isLoading.setValue(false);
                 }
             }
@@ -194,89 +199,53 @@ public class JadwalSholatViewModel extends ViewModel {
                 Log.e(TAG, "Error API Kota WilayahId: ", t);
                 kota.setValue(new ArrayList<>());
                 selectedCity.setValue(null);
-                selectedWaktuSholatApiCityId.setValue(null);
-                jadwalSholat.setValue(new ArrayList<>());
                 isLoading.setValue(false);
             }
         });
     }
 
-    public void fetchPrayerTimeApiCityId(String cityName) {
-        if (cityName == null) {
-            selectedWaktuSholatApiCityId.setValue(null);
-            jadwalSholat.setValue(new ArrayList<>());
-            isLoading.setValue(false);
-            return;
-        }
-        isLoading.setValue(true);
-        waktuSholatApiService.getKotaByName(cityName.toLowerCase()).enqueue(new Callback<WaktuSholatKotaResponseApi>() {
-            @Override
-            public void onResponse(@NonNull Call<WaktuSholatKotaResponseApi> call, @NonNull Response<WaktuSholatKotaResponseApi> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().getKota() != null && !response.body().getKota().isEmpty()) {
-                    String newCityId = response.body().getKota().get(0).getId();
-                    if (!Objects.equals(selectedWaktuSholatApiCityId.getValue(), newCityId)) {
-                        selectedWaktuSholatApiCityId.setValue(newCityId);
-                    } else {
-                        if (jadwalSholat.getValue() == null || jadwalSholat.getValue().isEmpty()) {
-                            fetchPrayerTimes();
-                        } else {
-                            isLoading.setValue(false);
-                        }
-                    }
-                } else {
-                    errorMessage.setValue("Kode kota (API Jadwal) tidak ditemukan untuk: " + cityName);
-                    Log.e(TAG, "Gagal mengambil kode kota (API Jadwal): " + response.code() + " - " + response.message() + " untuk " + cityName);
-                    selectedWaktuSholatApiCityId.setValue(null);
-                    jadwalSholat.setValue(new ArrayList<>());
-                    isLoading.setValue(false);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<WaktuSholatKotaResponseApi> call, @NonNull Throwable t) {
-                errorMessage.setValue("Error jaringan mengambil kode kota (API Jadwal): " + t.getMessage());
-                Log.e(TAG, "Error API Kode Kota (API Jadwal): ", t);
-                selectedWaktuSholatApiCityId.setValue(null);
-                jadwalSholat.setValue(new ArrayList<>());
-                isLoading.setValue(false);
-            }
-        });
-    }
-    public void fetchPrayerTimes() {
-        String cityId = selectedWaktuSholatApiCityId.getValue();
+    // Metode untuk mengambil jadwal sholat menggunakan MyQuran API
+    public void fetchPrayerTimesMyQuran() {
+        String myQuranCityIdToUse = DEFAULT_MYQURAN_CITY_ID; // Gunakan ID default
         String year = selectedTahunValue.getValue();
         String month = selectedBulanValue.getValue();
 
-        if (cityId == null || year == null || month == null) {
-            Log.w(TAG, "Data filter tidak lengkap untuk mengambil jadwal sholat. CityID: " + cityId + ", Year: " + year + ", Month: " + month);
-            jadwalSholat.setValue(new ArrayList<>());
+        if (year == null || month == null) {
+            Log.w(TAG, "Data tahun atau bulan tidak lengkap untuk mengambil jadwal sholat MyQuran.");
+            // jadwalSholat.setValue(new ArrayList<>()); // Jangan clear jika hanya menunggu
             return;
         }
         isLoading.setValue(true);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, Integer.parseInt(year));
-        calendar.set(Calendar.MONTH, Integer.parseInt(month) - 1);
+        calendar.set(Calendar.MONTH, Integer.parseInt(month) - 1); // Month is 0-indexed
+
         Calendar today = Calendar.getInstance();
+        int dayOfMonth;
         if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
                 calendar.get(Calendar.MONTH) == today.get(Calendar.MONTH)) {
-            calendar.set(Calendar.DAY_OF_MONTH, today.get(Calendar.DAY_OF_MONTH));
+            dayOfMonth = today.get(Calendar.DAY_OF_MONTH);
         } else {
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            dayOfMonth = 1;
         }
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String tanggal = dateFormat.format(calendar.getTime());
 
-        Log.d(TAG, "Mengambil jadwal sholat untuk City ID: " + cityId + ", Tanggal: " + tanggal);
+        Log.d(TAG, "Mengambil jadwal sholat MyQuran untuk City ID: " + myQuranCityIdToUse + ", Tanggal: " + tanggal);
 
-        waktuSholatApiService.getJadwalSholat(cityId, tanggal).enqueue(new Callback<DataJadwalSholatResponseApi>() {
+        myQuranApiService.getJadwalHarian(myQuranCityIdToUse, tanggal).enqueue(new Callback<MyQuranApiResponse>() {
             @Override
-            public void onResponse(@NonNull Call<DataJadwalSholatResponseApi> call, @NonNull Response<DataJadwalSholatResponseApi> response) {
+            public void onResponse(@NonNull Call<MyQuranApiResponse> call, @NonNull Response<MyQuranApiResponse> response) {
                 isLoading.setValue(false);
-                if (response.isSuccessful() && response.body() != null && "ok".equals(response.body().getStatus()) && response.body().getJadwal() != null && "data berhasil diambil".equals(response.body().getJadwal().getPesan())) {
-                    WaktuJadwalSholatApi times = response.body().getJadwal().getData();
-                    if (times != null) {
+                if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
+                    MyQuranDataObject dataObject = response.body().getData();
+                    if (dataObject != null && dataObject.getJadwal() != null) {
+                        MyQuranJadwalActual times = dataObject.getJadwal();
+                        currentLokasiMyQuran.setValue(dataObject.getLokasi() + ", " + dataObject.getDaerah());
+
                         List<WaktuSholatItem> items = new ArrayList<>();
                         items.add(new WaktuSholatItem("Imsak", times.getImsak()));
                         items.add(new WaktuSholatItem("Subuh", times.getSubuh()));
@@ -290,29 +259,32 @@ public class JadwalSholatViewModel extends ViewModel {
                         errorMessage.setValue(null);
                     } else {
                         jadwalSholat.setValue(new ArrayList<>());
-                        errorMessage.setValue("Data jadwal tidak ditemukan dalam respons.");
+                        errorMessage.setValue("Data jadwal tidak ditemukan dalam respons MyQuran.");
+                        currentLokasiMyQuran.setValue("Lokasi tidak diketahui");
                     }
                 } else {
                     jadwalSholat.setValue(new ArrayList<>());
-                    String errorMsg = "Gagal mengambil jadwal sholat.";
-                    if (response.body() != null && response.body().getJadwal() != null && response.body().getJadwal().getPesan() != null) {
-                        errorMsg += " Pesan API: " + response.body().getJadwal().getPesan();
-                    } else if (response.body() != null && response.body().getStatus() != null){
-                        errorMsg += " Status API: " + response.body().getStatus();
+                    currentLokasiMyQuran.setValue("Gagal memuat lokasi");
+                    String errorMsg = "Gagal mengambil jadwal sholat dari MyQuran.";
+                    if (response.body() != null && !response.body().isStatus()){
+                        errorMsg += " Status API: false.";
                     } else if (response.errorBody() != null) {
                         try { errorMsg += " Detail: " + response.errorBody().string(); } catch (Exception e) { Log.e(TAG, "Error parsing error body", e); }
-                    } else if (response.message() != null){ errorMsg += " HTTP: " + response.code() + " " + response.message(); }
+                    } else if (response.message() != null){
+                        errorMsg += " HTTP: " + response.code() + " " + response.message();
+                    }
                     errorMessage.setValue(errorMsg);
-                    Log.e(TAG, errorMsg);
+                    Log.e(TAG, errorMsg + " Response code: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<DataJadwalSholatResponseApi> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<MyQuranApiResponse> call, @NonNull Throwable t) {
                 isLoading.setValue(false);
                 jadwalSholat.setValue(new ArrayList<>());
-                errorMessage.setValue("Error jaringan mengambil jadwal: " + t.getMessage());
-                Log.e(TAG, "Error API Jadwal Sholat: ", t);
+                currentLokasiMyQuran.setValue("Gagal memuat lokasi");
+                errorMessage.setValue("Error jaringan mengambil jadwal MyQuran: " + t.getMessage());
+                Log.e(TAG, "Error API Jadwal Sholat MyQuran: ", t);
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.example.mi_zan;
+package com.example.mi_zan; // Pastikan package ini sesuai dengan struktur proyek Anda
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,327 +7,335 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton; // Import ImageButton
-import android.widget.LinearLayout; // Import LinearLayout
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-// import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mi_zan.adapter.JadwalSholatAdapter;
-import com.example.mi_zan.model.RegionItem;
-import com.example.mi_zan.model.WaktuSholatItem;
-import com.example.mi_zan.viewmodel.JadwalSholatViewModel;
+import com.example.mi_zan.model.JadwalData;
+import com.example.mi_zan.model.JadwalItem;
+import com.example.mi_zan.model.JadwalResponse;
+import com.example.mi_zan.model.LokasiItem;
+import com.example.mi_zan.model.LokasiResponse;
+import com.example.mi_zan.model.SinglePrayerTime; // Model baru untuk tampilan per waktu sholat
+import com.example.mi_zan.network.ApiService;
+import com.example.mi_zan.network.RetrofitClient;
 
 import java.util.ArrayList;
-// import java.util.Calendar;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-// import java.util.Objects; // Tidak terpakai secara eksplisit di sini
 
-public class JadwalSholatFragment extends Fragment implements JadwalSholatAdapter.OnItemButtonClickListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private JadwalSholatViewModel viewModel;
-    private Spinner spinnerProvinsi;
-    private Spinner spinnerKota;
-    private Spinner spinnerBulan;
-    private Spinner spinnerTahun;
+public class JadwalSholatFragment extends Fragment {
+
+    private static final String TAG = "JadwalSholatFragment";
+
+    private EditText etSearchKota;
+    private Button btnSearchKota;
+    private Spinner spinnerKota, spinnerBulan, spinnerTahun;
+    private Button btnTampilkanJadwal;
     private RecyclerView rvJadwalSholat;
+    private TextView tvCurrentLocation;
+    private ImageButton btnToggleFilter;
+    private LinearLayout layoutFilterContent;
+
+    private ApiService apiService;
     private JadwalSholatAdapter jadwalSholatAdapter;
-    // private ProgressBar progressBar;
+    private List<LokasiItem> lokasiItemList = new ArrayList<>(); // Untuk spinner kota
+    private List<SinglePrayerTime> singlePrayerTimeDisplayList = new ArrayList<>(); // Untuk RecyclerView
+    private ArrayAdapter<LokasiItem> kotaAdapter;
+    private LokasiItem selectedLokasi;
 
-    private ArrayAdapter<RegionItem> provinsiAdapter;
-    private ArrayAdapter<RegionItem> kotaAdapter;
-    private ArrayAdapter<String> bulanAdapter;
-    private ArrayAdapter<String> tahunAdapter;
+    private boolean isFilterVisible = true;
 
-    private LinearLayout layoutFilterContent; // Untuk expand/collapse
-    private ImageButton btnToggleFilter; // Tombol expand/collapse
-    private boolean isFilterExpanded = true; // State awal filter
-
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.jadwal_sholat_fragment, container, false);
-        spinnerProvinsi = view.findViewById(R.id.spinner_provinsi);
+
+        // Inisialisasi Views
+        etSearchKota = view.findViewById(R.id.et_search_kota);
+        btnSearchKota = view.findViewById(R.id.btn_search_kota);
         spinnerKota = view.findViewById(R.id.spinner_kota);
         spinnerBulan = view.findViewById(R.id.spinner_bulan);
         spinnerTahun = view.findViewById(R.id.spinner_tahun);
+        btnTampilkanJadwal = view.findViewById(R.id.btn_tampilkan_jadwal);
         rvJadwalSholat = view.findViewById(R.id.rv_jadwal_sholat);
+        tvCurrentLocation = view.findViewById(R.id.tv_current_location_myquran);
+        btnToggleFilter = view.findViewById(R.id.btn_toggle_filter);
+        layoutFilterContent = view.findViewById(R.id.layout_filter_content);
 
-        layoutFilterContent = view.findViewById(R.id.layout_filter_content); // ID dari LinearLayout filter
-        btnToggleFilter = view.findViewById(R.id.btn_toggle_filter); // ID dari ImageButton expand/collapse
+        // Inisialisasi ApiService
+        apiService = RetrofitClient.getClient().create(ApiService.class);
 
-        // progressBar = view.findViewById(R.id.progressBar);
-        setupRecyclerView();
-        setupFilterToggle(); // Panggil setup untuk tombol expand/collapse
+        // Setup UI Components
+        setupFilterToggle();
+        setupSpinners();    // Menginisialisasi adapter spinner kota
+        setupRecyclerView(); // Menginisialisasi adapter RecyclerView
+
+        // Set Click Listeners
+        btnSearchKota.setOnClickListener(v -> {
+            String keyword = etSearchKota.getText().toString().trim();
+            if (keyword.isEmpty()) {
+                Toast.makeText(getContext(), "Memuat semua kota...", Toast.LENGTH_SHORT).show();
+                fetchAllKota();
+            } else {
+                searchKotaByKeyword(keyword);
+            }
+        });
+
+        btnTampilkanJadwal.setOnClickListener(v -> fetchJadwalSholat());
+
+        // Muat semua kota saat fragment pertama kali dibuat
+        fetchAllKota();
+
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(JadwalSholatViewModel.class);
-        setupSpinners();
-        observeViewModel();
-    }
-
-    private void setupRecyclerView() {
-        jadwalSholatAdapter = new JadwalSholatAdapter();
-        jadwalSholatAdapter.setOnItemButtonClickListener(this);
-        rvJadwalSholat.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvJadwalSholat.setAdapter(jadwalSholatAdapter);
-    }
-
     private void setupFilterToggle() {
-        // Set state awal (misalnya, expanded)
-        updateFilterVisibility();
+        // Pastikan drawable ic_arrow_down juga ada jika ingin mengganti icon
+        // btnToggleFilter.setImageResource(isFilterVisible ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+        layoutFilterContent.setVisibility(isFilterVisible ? View.VISIBLE : View.GONE); // Set initial state
 
         btnToggleFilter.setOnClickListener(v -> {
-            isFilterExpanded = !isFilterExpanded;
-            updateFilterVisibility();
+            isFilterVisible = !isFilterVisible;
+            layoutFilterContent.setVisibility(isFilterVisible ? View.VISIBLE : View.GONE);
+            // Ganti icon jika perlu
+            // btnToggleFilter.setImageResource(isFilterVisible ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+            Toast.makeText(getContext(), isFilterVisible ? "Filter ditampilkan" : "Filter disembunyikan", Toast.LENGTH_SHORT).show();
         });
     }
-
-    private void updateFilterVisibility() {
-        if (isFilterExpanded) {
-            layoutFilterContent.setVisibility(View.VISIBLE);
-            btnToggleFilter.setImageResource(R.drawable.ic_arrow_up); // Ganti dengan ikon panah ke atas
-        } else {
-            layoutFilterContent.setVisibility(View.GONE);
-            btnToggleFilter.setImageResource(R.drawable.ic_arrow_down); // Ganti dengan ikon panah ke bawah
-        }
-    }
-
 
     private void setupSpinners() {
-        provinsiAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
-        provinsiAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerProvinsi.setAdapter(provinsiAdapter);
-        spinnerProvinsi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                RegionItem selected = (RegionItem) parent.getItemAtPosition(position);
-                if (selected != null && !selected.equals(viewModel.selectedProvince.getValue())) {
-                    Log.d("Spinner", "Provinsi selected by user: " + selected.getName());
-                    viewModel.selectedProvince.setValue(selected);
-                }
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        kotaAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
+        // Spinner Kota
+        kotaAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, lokasiItemList);
         kotaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerKota.setAdapter(kotaAdapter);
         spinnerKota.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                RegionItem selected = (RegionItem) parent.getItemAtPosition(position);
-                if (selected != null && !selected.equals(viewModel.selectedCity.getValue())) {
-                    Log.d("Spinner", "Kota selected by user: " + selected.getName());
-                    viewModel.selectedCity.setValue(selected);
+                if (!lokasiItemList.isEmpty() && position < lokasiItemList.size()) {
+                    selectedLokasi = lokasiItemList.get(position);
+                } else {
+                    selectedLokasi = null;
                 }
             }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedLokasi = null;
+            }
         });
 
-        bulanAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
+        // Spinner Bulan
+        List<String> bulanList = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            bulanList.add(String.format(Locale.getDefault(), "%02d", i));
+        }
+        ArrayAdapter<String> bulanAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, bulanList);
         bulanAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBulan.setAdapter(bulanAdapter);
-        spinnerBulan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedMonthValue = String.format(Locale.US, "%02d", position + 1);
-                if (!selectedMonthValue.equals(viewModel.selectedBulanValue.getValue())) {
-                    Log.d("Spinner", "Bulan selected by user: " + selectedMonthValue);
-                    viewModel.selectedBulanValue.setValue(selectedMonthValue);
-                }
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        Calendar calendar = Calendar.getInstance();
+        int currentMonthIndex = calendar.get(Calendar.MONTH); // 0-11
+        spinnerBulan.setSelection(currentMonthIndex);
 
-        tahunAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
+        // Spinner Tahun
+        List<String> tahunList = new ArrayList<>();
+        int currentYear = calendar.get(Calendar.YEAR);
+        for (int i = currentYear - 2; i <= currentYear + 5; i++) { // Range tahun, bisa disesuaikan
+            tahunList.add(String.valueOf(i));
+        }
+        ArrayAdapter<String> tahunAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, tahunList);
         tahunAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTahun.setAdapter(tahunAdapter);
-        spinnerTahun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerTahun.setSelection(tahunList.indexOf(String.valueOf(currentYear))); // Set default ke tahun saat ini
+    }
+
+    private void setupRecyclerView() {
+        jadwalSholatAdapter = new JadwalSholatAdapter(getContext(), singlePrayerTimeDisplayList);
+        rvJadwalSholat.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvJadwalSholat.setAdapter(jadwalSholatAdapter);
+    }
+
+    private void fetchAllKota() {
+        tvCurrentLocation.setText("Memuat daftar semua kota...");
+        tvCurrentLocation.setVisibility(View.VISIBLE);
+        apiService.getAllKota().enqueue(new Callback<LokasiResponse>() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedYear = parent.getItemAtPosition(position).toString();
-                if (!selectedYear.equals(viewModel.selectedTahunValue.getValue())) {
-                    Log.d("Spinner", "Tahun selected by user: " + selectedYear);
-                    viewModel.selectedTahunValue.setValue(selectedYear);
-                }
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
-    }
-
-    private void observeViewModel() {
-        viewModel.getProvinces().observe(getViewLifecycleOwner(), provinces -> {
-            if (provinces != null) {
-                Log.d("Observer", "Provinces LiveData updated, size: " + provinces.size());
-                Object previouslySelected = spinnerProvinsi.getSelectedItem();
-                provinsiAdapter.clear();
-                provinsiAdapter.addAll(provinces);
-
-                RegionItem currentVmSelection = viewModel.selectedProvince.getValue();
-                if (currentVmSelection != null) {
-                    int pos = provinsiAdapter.getPosition(currentVmSelection);
-                    if (pos >= 0 && spinnerProvinsi.getSelectedItemPosition() != pos) { // Cek jika sudah terpilih
-                        spinnerProvinsi.setSelection(pos, false);
+            public void onResponse(@NonNull Call<LokasiResponse> call, @NonNull Response<LokasiResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
+                    lokasiItemList.clear();
+                    if (response.body().getData() != null && !response.body().getData().isEmpty()) {
+                        lokasiItemList.addAll(response.body().getData());
+                        kotaAdapter.notifyDataSetChanged();
+                        if (!lokasiItemList.isEmpty()) {
+                            spinnerKota.setSelection(0); // Pilih item pertama secara default
+                            selectedLokasi = lokasiItemList.get(0); // Update selectedLokasi juga
+                        }
+                        tvCurrentLocation.setText("Pilih kota dari daftar.");
+                        Toast.makeText(getContext(), "Daftar semua kota dimuat", Toast.LENGTH_SHORT).show();
+                    } else {
+                        tvCurrentLocation.setText("Tidak ada data kota yang ditemukan.");
+                        kotaAdapter.notifyDataSetChanged(); // Kosongkan spinner jika tidak ada hasil
+                        Toast.makeText(getContext(), "Tidak ada kota yang bisa dimuat", Toast.LENGTH_SHORT).show();
                     }
-                } else if (previouslySelected instanceof RegionItem && provinces.contains(previouslySelected)) {
-                    int pos = provinsiAdapter.getPosition((RegionItem)previouslySelected);
-                    if (pos >= 0 && spinnerProvinsi.getSelectedItemPosition() != pos) spinnerProvinsi.setSelection(pos, false);
-                } else if (!provinces.isEmpty() && spinnerProvinsi.getSelectedItemPosition() == -1) {
-                    // Tidak melakukan auto-select di sini, biarkan ViewModel yang mengontrol state awal
+                } else {
+                    tvCurrentLocation.setText("Gagal memuat daftar kota.");
+                    Toast.makeText(getContext(), "Gagal memuat daftar kota: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Fetch All Kota Error: " + response.code() + " - " + response.message());
                 }
             }
-        });
 
-        viewModel.selectedProvince.observe(getViewLifecycleOwner(), selectedProvince -> {
-            if (selectedProvince != null) {
-                Log.d("Observer", "ViewModel selectedProvince changed: " + selectedProvince.getName());
-                // Hanya fetch cities jika selectedProvince benar-benar berubah atau kota belum dimuat
-                if (viewModel.getCities().getValue() == null || viewModel.getCities().getValue().isEmpty() ||
-                        (viewModel.selectedCity.getValue() != null && !selectedProvince.getId().equals(viewModel.selectedCity.getValue().getId().substring(0,2))) ) {
-                    viewModel.fetchCitiesForProvince(selectedProvince.getId());
-                }
-            } else {
-                kotaAdapter.clear();
-                jadwalSholatAdapter.setWaktuSholatItemList(new ArrayList<>());
-            }
-        });
-
-        viewModel.getCities().observe(getViewLifecycleOwner(), cities -> {
-            if (cities != null) {
-                Log.d("Observer", "Cities LiveData updated, size: " + cities.size());
-                Object previouslySelected = spinnerKota.getSelectedItem();
-                kotaAdapter.clear();
-                kotaAdapter.addAll(cities);
-
-                RegionItem currentVmSelection = viewModel.selectedCity.getValue();
-                if (currentVmSelection != null) {
-                    int pos = kotaAdapter.getPosition(currentVmSelection);
-                    if (pos >= 0 && spinnerKota.getSelectedItemPosition() != pos) {
-                        spinnerKota.setSelection(pos, false);
-                    }
-                } else if (previouslySelected instanceof RegionItem && cities.contains(previouslySelected)) {
-                    int pos = kotaAdapter.getPosition((RegionItem)previouslySelected);
-                    if (pos >= 0 && spinnerKota.getSelectedItemPosition() != pos) spinnerKota.setSelection(pos, false);
-                } else if (!cities.isEmpty() && spinnerKota.getSelectedItemPosition() == -1) {
-                    // Tidak melakukan auto-select
-                }
-            }
-        });
-
-        viewModel.selectedCity.observe(getViewLifecycleOwner(), selectedCity -> {
-            if (selectedCity != null) {
-                Log.d("Observer", "ViewModel selectedCity changed: " + selectedCity.getName());
-                // Hanya fetch city ID jika selectedCity benar-benar berubah atau ID belum ada
-                if (viewModel.getSelectedWaktuSholatApiCityId().getValue() == null ||
-                        (viewModel.selectedCity.getValue()!=null && !selectedCity.getName().equalsIgnoreCase(viewModel.selectedCity.getValue().getName())) // Asumsi nama unik untuk fetch ID
-                ) {
-                    viewModel.fetchPrayerTimeApiCityId(selectedCity.getName());
-                }
-            } else {
-                jadwalSholatAdapter.setWaktuSholatItemList(new ArrayList<>());
-            }
-        });
-
-        viewModel.getMonths().observe(getViewLifecycleOwner(), months -> {
-            if (months != null) {
-                Log.d("Observer", "Months LiveData updated");
-                Object previouslySelected = spinnerBulan.getSelectedItem();
-                bulanAdapter.clear();
-                bulanAdapter.addAll(months);
-                String currentMonthValue = viewModel.selectedBulanValue.getValue();
-                if (currentMonthValue != null) {
-                    int monthIndex = Integer.parseInt(currentMonthValue) - 1;
-                    if (monthIndex >= 0 && monthIndex < bulanAdapter.getCount() && spinnerBulan.getSelectedItemPosition() != monthIndex) {
-                        spinnerBulan.setSelection(monthIndex, false);
-                    }
-                } else if (previouslySelected != null){
-                    int pos = bulanAdapter.getPosition(previouslySelected.toString());
-                    if (pos >=0 && spinnerBulan.getSelectedItemPosition() != pos) spinnerBulan.setSelection(pos, false);
-                }
-            }
-        });
-
-        viewModel.getYears().observe(getViewLifecycleOwner(), years -> {
-            if (years != null) {
-                Log.d("Observer", "Years LiveData updated");
-                Object previouslySelected = spinnerTahun.getSelectedItem();
-                tahunAdapter.clear();
-                tahunAdapter.addAll(years);
-                String currentYearValue = viewModel.selectedTahunValue.getValue();
-                if (currentYearValue != null) {
-                    int yearPos = tahunAdapter.getPosition(currentYearValue);
-                    if (yearPos >= 0 && spinnerTahun.getSelectedItemPosition() != yearPos) {
-                        spinnerTahun.setSelection(yearPos, false);
-                    }
-                } else if (previouslySelected != null){
-                    int pos = tahunAdapter.getPosition(previouslySelected.toString());
-                    if (pos >=0 && spinnerTahun.getSelectedItemPosition() != pos) spinnerTahun.setSelection(pos, false);
-                }
-            }
-        });
-
-        viewModel.getSelectedWaktuSholatApiCityId().observe(getViewLifecycleOwner(), cityId -> {
-            Log.d("Observer", "ViewModel selectedWaktuSholatApiCityId changed: " + cityId);
-            if (cityId != null && viewModel.selectedBulanValue.getValue() != null && viewModel.selectedTahunValue.getValue() != null) {
-                viewModel.fetchPrayerTimes();
-            } else if (cityId == null && viewModel.selectedCity.getValue() != null) { // Jika cityId jadi null setelah ada kota terpilih
-                jadwalSholatAdapter.setWaktuSholatItemList(new ArrayList<>());
-            }
-        });
-
-        // Observer terpisah untuk bulan dan tahun untuk memicu fetchPrayerTimes jika cityId sudah ada
-        viewModel.selectedBulanValue.observe(getViewLifecycleOwner(), month -> {
-            Log.d("Observer", "ViewModel selectedBulanValue changed: " + month);
-            if (month != null && viewModel.getSelectedWaktuSholatApiCityId().getValue() != null && viewModel.selectedTahunValue.getValue() != null) {
-                viewModel.fetchPrayerTimes();
-            }
-        });
-        viewModel.selectedTahunValue.observe(getViewLifecycleOwner(), year -> {
-            Log.d("Observer", "ViewModel selectedTahunValue changed: " + year);
-            if (year != null && viewModel.getSelectedWaktuSholatApiCityId().getValue() != null && viewModel.selectedBulanValue.getValue() != null) {
-                viewModel.fetchPrayerTimes();
-            }
-        });
-
-        viewModel.getPrayerSchedule().observe(getViewLifecycleOwner(), waktuSholatItems -> {
-            Log.d("Observer", "PrayerSchedule LiveData updated, size: " + (waktuSholatItems != null ? waktuSholatItems.size() : 0));
-            jadwalSholatAdapter.setWaktuSholatItemList(waktuSholatItems);
-        });
-
-        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            if (isLoading != null && isLoading) {
-                Toast.makeText(getContext(), "Memuat...", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
-            if (errorMessage != null && !errorMessage.isEmpty()) {
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
-                viewModel.clearErrorMessage();
+            @Override
+            public void onFailure(@NonNull Call<LokasiResponse> call, @NonNull Throwable t) {
+                tvCurrentLocation.setText("Error: " + t.getMessage());
+                Toast.makeText(getContext(), "Error memuat daftar kota: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Fetch All Kota Failure: ", t);
             }
         });
     }
 
-    @Override
-    public void onAktifButtonClick(WaktuSholatItem item, int position) {
-        Toast.makeText(getContext(), "Tombol Aktif diklik untuk: " + item.getName(), Toast.LENGTH_SHORT).show();
+    private void searchKotaByKeyword(String keyword) {
+        tvCurrentLocation.setText("Mencari lokasi '" + keyword + "'...");
+        tvCurrentLocation.setVisibility(View.VISIBLE);
+        apiService.searchKota(keyword).enqueue(new Callback<LokasiResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<LokasiResponse> call, @NonNull Response<LokasiResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
+                    lokasiItemList.clear();
+                    if (response.body().getData() != null && !response.body().getData().isEmpty()) {
+                        lokasiItemList.addAll(response.body().getData());
+                        kotaAdapter.notifyDataSetChanged();
+                        if (!lokasiItemList.isEmpty()) {
+                            spinnerKota.setSelection(0);
+                            selectedLokasi = lokasiItemList.get(0);
+                        }
+                        tvCurrentLocation.setText("Pilih lokasi dari hasil pencarian.");
+                        Toast.makeText(getContext(), "Pilih kota dari daftar hasil pencarian", Toast.LENGTH_SHORT).show();
+                    } else {
+                        tvCurrentLocation.setText("Lokasi '" + keyword + "' tidak ditemukan.");
+                        kotaAdapter.notifyDataSetChanged(); // Kosongkan spinner jika tidak ada hasil
+                        Toast.makeText(getContext(), "Kota tidak ditemukan", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    tvCurrentLocation.setText("Gagal mencari lokasi.");
+                    Toast.makeText(getContext(), "Gagal mencari kota: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Search Kota Error: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<LokasiResponse> call, @NonNull Throwable t) {
+                tvCurrentLocation.setText("Error pencarian: " + t.getMessage());
+                Toast.makeText(getContext(), "Error pencarian: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Search Kota Failure: ", t);
+            }
+        });
     }
 
-    @Override
-    public void onNonaktifButtonClick(WaktuSholatItem item, int position) {
-        Toast.makeText(getContext(), "Tombol Nonaktif diklik untuk: " + item.getName(), Toast.LENGTH_SHORT).show();
+    private void fetchJadwalSholat() {
+        if (selectedLokasi == null) {
+            Toast.makeText(getContext(), "Silakan pilih kota terlebih dahulu", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String idKota = selectedLokasi.getId();
+        String bulan = spinnerBulan.getSelectedItem().toString();
+        String tahun = spinnerTahun.getSelectedItem().toString();
+
+        if (idKota.isEmpty() || bulan.isEmpty() || tahun.isEmpty()) { // Seharusnya tidak terjadi jika spinner terisi
+            Toast.makeText(getContext(), "Pastikan semua filter terisi", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        tvCurrentLocation.setText("Memuat jadwal untuk " + selectedLokasi.getLokasi() + "...");
+        tvCurrentLocation.setVisibility(View.VISIBLE);
+        Log.d(TAG, "Fetching jadwal: ID=" + idKota + ", Tahun=" + tahun + ", Bulan=" + bulan);
+
+        apiService.getJadwalSholat(idKota, tahun, bulan).enqueue(new Callback<JadwalResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JadwalResponse> call, @NonNull Response<JadwalResponse> response) {
+                singlePrayerTimeDisplayList.clear(); // Bersihkan list sebelum diisi ulang
+
+                if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
+                    JadwalData jadwalData = response.body().getData();
+
+                    if (jadwalData != null && jadwalData.getJadwal() != null && !jadwalData.getJadwal().isEmpty()) {
+                        // Transformasi data dari List<JadwalItem> ke List<SinglePrayerTime>
+                        for (JadwalItem dailySchedule : jadwalData.getJadwal()) {
+                            String tanggalDisplay = dailySchedule.getTanggal(); // "Minggu, 01/06/2025"
+                            String rawDate = dailySchedule.getDate();       // "2025-06-01"
+
+                            // Tambahkan setiap waktu sholat sebagai item terpisah
+                            if (dailySchedule.getImsak() != null && !dailySchedule.getImsak().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Imsak", dailySchedule.getImsak(), tanggalDisplay, rawDate));
+                            }
+                            if (dailySchedule.getSubuh() != null && !dailySchedule.getSubuh().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Subuh", dailySchedule.getSubuh(), tanggalDisplay, rawDate));
+                            }
+                            if (dailySchedule.getTerbit() != null && !dailySchedule.getTerbit().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Terbit", dailySchedule.getTerbit(), tanggalDisplay, rawDate));
+                            }
+                            if (dailySchedule.getDhuha() != null && !dailySchedule.getDhuha().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Dhuha", dailySchedule.getDhuha(), tanggalDisplay, rawDate));
+                            }
+                            if (dailySchedule.getDzuhur() != null && !dailySchedule.getDzuhur().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Dzuhur", dailySchedule.getDzuhur(), tanggalDisplay, rawDate));
+                            }
+                            if (dailySchedule.getAshar() != null && !dailySchedule.getAshar().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Ashar", dailySchedule.getAshar(), tanggalDisplay, rawDate));
+                            }
+                            if (dailySchedule.getMaghrib() != null && !dailySchedule.getMaghrib().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Maghrib", dailySchedule.getMaghrib(), tanggalDisplay, rawDate));
+                            }
+                            if (dailySchedule.getIsya() != null && !dailySchedule.getIsya().isEmpty()) {
+                                singlePrayerTimeDisplayList.add(new SinglePrayerTime("Isya", dailySchedule.getIsya(), tanggalDisplay, rawDate));
+                            }
+                        }
+                        jadwalSholatAdapter.notifyDataSetChanged();
+                        tvCurrentLocation.setText("Jadwal Sholat untuk: " + jadwalData.getLokasi() + " (" + jadwalData.getDaerah() + ")");
+                        Toast.makeText(getContext(), "Jadwal dimuat", Toast.LENGTH_SHORT).show();
+                    } else {
+                        jadwalSholatAdapter.notifyDataSetChanged(); // Pastikan list kosong ditampilkan
+                        tvCurrentLocation.setText("Data jadwal tidak ditemukan untuk " + selectedLokasi.getLokasi());
+                        Toast.makeText(getContext(), "Data jadwal kosong", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    jadwalSholatAdapter.notifyDataSetChanged();
+                    tvCurrentLocation.setText("Gagal memuat jadwal untuk " + selectedLokasi.getLokasi());
+                    Toast.makeText(getContext(), "Gagal memuat jadwal: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Fetch Jadwal Error: " + response.code() + " - " + response.message());
+                    try {
+                        if (response.errorBody() != null) {
+                            Log.e(TAG, "Error Body: " + response.errorBody().string());
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error parsing error body", e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JadwalResponse> call, @NonNull Throwable t) {
+                singlePrayerTimeDisplayList.clear();
+                jadwalSholatAdapter.notifyDataSetChanged();
+                tvCurrentLocation.setText("Error: " + t.getMessage());
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Fetch Jadwal Failure: ", t);
+            }
+        });
     }
 }
