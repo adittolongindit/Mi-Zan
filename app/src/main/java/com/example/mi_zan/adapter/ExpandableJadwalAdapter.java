@@ -1,6 +1,7 @@
-package com.example.mi_zan.adapter;
+package com.example.mi_zan.adapter; // Sesuaikan package
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final String TAG = "ExpandableJadwalAdapter";
     private Context context;
     private List<PrayerScheduleDisplayItem> displayItems;
 
@@ -34,7 +36,10 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        return displayItems.get(position).getItemType();
+        if (position >= 0 && position < displayItems.size()) {
+            return displayItems.get(position).getItemType();
+        }
+        return -1; // Tipe tidak valid jika posisi di luar batas
     }
 
     @NonNull
@@ -48,16 +53,23 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             View view = inflater.inflate(R.layout.list_item_day_group, parent, false);
             return new DayViewHolder(view);
         } else if (viewType == PrayerScheduleDisplayItem.VIEW_TYPE_PRAYER) {
-            View view = inflater.inflate(R.layout.list_item_jadwal, parent, false); // Layout item jadwal yang sudah ada
+            View view = inflater.inflate(R.layout.list_item_jadwal, parent, false);
             return new PrayerTimeViewHolder(view);
         }
-        throw new IllegalArgumentException("Invalid view type");
+        // Fallback jika viewType tidak dikenal (seharusnya tidak terjadi)
+        Log.e(TAG, "onCreateViewHolder: Unknown view type - " + viewType);
+        View emptyView = new View(parent.getContext());
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(0,0));
+        return new RecyclerView.ViewHolder(emptyView) {}; // ViewHolder kosong
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        int viewType = getItemViewType(position);
-        PrayerScheduleDisplayItem currentItem = displayItems.get(position);
+        // 'position' di sini adalah posisi layout, bukan adapter position.
+        // Untuk interaksi, selalu gunakan holder.getAdapterPosition().
+
+        int viewType = holder.getItemViewType(); // Dapatkan tipe view dari holder
+        PrayerScheduleDisplayItem currentItem = displayItems.get(position); // Ambil item berdasarkan posisi yang diberikan
 
         if (viewType == PrayerScheduleDisplayItem.VIEW_TYPE_WEEK) {
             WeekGroup weekGroup = (WeekGroup) currentItem;
@@ -67,12 +79,15 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
                     weekGroup.isExpanded() ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
 
             weekViewHolder.itemView.setOnClickListener(v -> {
-                if (weekGroup.isExpanded()) {
-                    collapseWeek(position, weekGroup);
-                } else {
-                    expandWeek(position, weekGroup);
+                int adapterPos = weekViewHolder.getAdapterPosition();
+                if (adapterPos != RecyclerView.NO_POSITION) {
+                    WeekGroup clickedWeekGroup = (WeekGroup) displayItems.get(adapterPos); // Ambil item terbaru dari list
+                    if (clickedWeekGroup.isExpanded()) {
+                        collapseWeek(adapterPos, clickedWeekGroup);
+                    } else {
+                        expandWeek(adapterPos, clickedWeekGroup);
+                    }
                 }
-                weekGroup.setExpanded(!weekGroup.isExpanded());
             });
 
         } else if (viewType == PrayerScheduleDisplayItem.VIEW_TYPE_DAY) {
@@ -83,12 +98,15 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
                     dayGroup.isExpanded() ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
 
             dayViewHolder.itemView.setOnClickListener(v -> {
-                if (dayGroup.isExpanded()) {
-                    collapseDay(position, dayGroup);
-                } else {
-                    expandDay(position, dayGroup);
+                int adapterPos = dayViewHolder.getAdapterPosition();
+                if (adapterPos != RecyclerView.NO_POSITION) {
+                    DayGroup clickedDayGroup = (DayGroup) displayItems.get(adapterPos); // Ambil item terbaru
+                    if (clickedDayGroup.isExpanded()) {
+                        collapseDay(adapterPos, clickedDayGroup);
+                    } else {
+                        expandDay(adapterPos, clickedDayGroup);
+                    }
                 }
-                dayGroup.setExpanded(!dayGroup.isExpanded());
             });
 
         } else if (viewType == PrayerScheduleDisplayItem.VIEW_TYPE_PRAYER) {
@@ -100,6 +118,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             prayerViewHolder.tvTanggalItemJadwal.setText(prayerTime.getDateDisplay());
             prayerViewHolder.tvWaktuJadwal.setText(prayerTime.getPrayerTime());
 
+            // Logika tombol aktif/nonaktif
             if (prayerTime.isActive()) {
                 prayerViewHolder.btnAktif.setEnabled(false);
                 prayerViewHolder.btnAktif.setAlpha(0.5f);
@@ -113,88 +132,154 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             prayerViewHolder.btnAktif.setOnClickListener(v -> {
-                if (!prayerTime.isActive()) {
-                    prayerTime.setActive(true);
-                    notifyItemChanged(holder.getAdapterPosition());
-                    Toast.makeText(context, prayerTime.getPrayerName() + " (" + prayerTime.getDateDisplay() + ") diaktifkan", Toast.LENGTH_SHORT).show();
+                int adapterPos = prayerViewHolder.getAdapterPosition();
+                if (adapterPos != RecyclerView.NO_POSITION) {
+                    PrayerTimeDisplayWrapper currentWrapper = (PrayerTimeDisplayWrapper) displayItems.get(adapterPos);
+                    SinglePrayerTime currentPrayerTime = currentWrapper.getSinglePrayerTime();
+                    if (!currentPrayerTime.isActive()) {
+                        currentPrayerTime.setActive(true);
+                        notifyItemChanged(adapterPos);
+                        Toast.makeText(context, currentPrayerTime.getPrayerName() + " (" + currentPrayerTime.getDateDisplay() + ") diaktifkan", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
             prayerViewHolder.btnNonaktif.setOnClickListener(v -> {
-                if (prayerTime.isActive()) {
-                    prayerTime.setActive(false);
-                    notifyItemChanged(holder.getAdapterPosition());
-                    Toast.makeText(context, prayerTime.getPrayerName() + " (" + prayerTime.getDateDisplay() + ") dinonaktifkan", Toast.LENGTH_SHORT).show();
+                int adapterPos = prayerViewHolder.getAdapterPosition();
+                if (adapterPos != RecyclerView.NO_POSITION) {
+                    PrayerTimeDisplayWrapper currentWrapper = (PrayerTimeDisplayWrapper) displayItems.get(adapterPos);
+                    SinglePrayerTime currentPrayerTime = currentWrapper.getSinglePrayerTime();
+                    if (currentPrayerTime.isActive()) {
+                        currentPrayerTime.setActive(false);
+                        notifyItemChanged(adapterPos);
+                        Toast.makeText(context, currentPrayerTime.getPrayerName() + " (" + currentPrayerTime.getDateDisplay() + ") dinonaktifkan", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
     }
 
     private void expandWeek(int position, WeekGroup weekGroup) {
-        if (weekGroup.getDayGroups() != null && !weekGroup.getDayGroups().isEmpty()) {
-            int childStartPosition = position + 1;
-            displayItems.addAll(childStartPosition, weekGroup.getDayGroups());
-            notifyItemRangeInserted(childStartPosition, weekGroup.getDayGroups().size());
-            notifyItemChanged(position);
+        if (weekGroup.isExpanded() || weekGroup.getDayGroups() == null || weekGroup.getDayGroups().isEmpty()) {
+            Log.d(TAG, "expandWeek: Already expanded or no children for week at position " + position);
+            return;
         }
+        weekGroup.setExpanded(true);
+
+        int childStartPosition = position + 1;
+        List<DayGroup> children = weekGroup.getDayGroups();
+
+        if (childStartPosition <= displayItems.size()) { // Periksa batas sebelum addAll
+            displayItems.addAll(childStartPosition, children);
+            notifyItemRangeInserted(childStartPosition, children.size());
+        } else {
+            // Ini seharusnya tidak terjadi jika 'position' valid dan list konsisten
+            Log.e(TAG, "expandWeek: childStartPosition (" + childStartPosition +
+                    ") is out of bounds for displayItems size (" + displayItems.size() + "). Position: " + position);
+            // Sebagai fallback yang kurang ideal, tambahkan ke akhir (mungkin merusak urutan visual)
+            // displayItems.addAll(children);
+            // notifyItemRangeInserted(displayItems.size() - children.size(), children.size());
+            // Atau, lebih baik, log error dan jangan lakukan apa-apa untuk mencegah state yang lebih buruk
+            weekGroup.setExpanded(false); // Kembalikan state jika gagal expand
+            return;
+        }
+        notifyItemChanged(position); // Update icon expand dari week item
     }
 
     private void collapseWeek(int position, WeekGroup weekGroup) {
-        List<PrayerScheduleDisplayItem> itemsToRemove = new ArrayList<>();
-        // Hapus semua anak dari week ini
-        int i = position + 1;
-        while (i < displayItems.size()) {
-            PrayerScheduleDisplayItem item = displayItems.get(i);
-            if (item.getItemType() == PrayerScheduleDisplayItem.VIEW_TYPE_WEEK) { // Sudah sampai week berikutnya
-                break;
+        if (!weekGroup.isExpanded()) {
+            Log.d(TAG, "collapseWeek: Already collapsed for week at position " + position);
+            return;
+        }
+        weekGroup.setExpanded(false);
+
+        int itemsToRemoveCount = 0;
+        // Hitung semua item anak yang akan dihapus (DayGroup dan PrayerTime-nya jika expanded)
+        for (DayGroup day : weekGroup.getDayGroups()) {
+            itemsToRemoveCount++; // Item DayGroup itu sendiri
+            if (day.isExpanded()) {
+                itemsToRemoveCount += day.getPrayerTimes().size();
+                day.setExpanded(false); // Tutup juga DayGroup anaknya
             }
-            itemsToRemove.add(item);
-            // Jika DayGroup yang dihapus juga expanded, set expanded jadi false
-            if(item.getItemType() == PrayerScheduleDisplayItem.VIEW_TYPE_DAY){
-                ((DayGroup)item).setExpanded(false);
-            }
-            i++;
         }
 
-        if (!itemsToRemove.isEmpty()) {
-            displayItems.removeAll(itemsToRemove);
-            notifyItemRangeRemoved(position + 1, itemsToRemove.size());
+        if (itemsToRemoveCount > 0) {
+            int startRemoveIndex = position + 1;
+            // Pastikan kita tidak mencoba menghapus di luar batas atau lebih banyak dari yang ada
+            if (startRemoveIndex < displayItems.size() && (startRemoveIndex + itemsToRemoveCount) <= displayItems.size()) {
+                for (int i = 0; i < itemsToRemoveCount; i++) {
+                    // Selalu hapus dari startRemoveIndex karena list bergeser
+                    if (startRemoveIndex < displayItems.size()){ // Double check sebelum remove
+                        displayItems.remove(startRemoveIndex);
+                    } else {
+                        Log.e(TAG, "collapseWeek: Attempted to remove from out of bounds index during loop.");
+                        break; // Keluar loop jika terjadi kesalahan batas
+                    }
+                }
+                notifyItemRangeRemoved(startRemoveIndex, itemsToRemoveCount);
+            } else {
+                Log.e(TAG, "collapseWeek: Calculated itemsToRemoveCount (" + itemsToRemoveCount +
+                        ") or startRemoveIndex (" + startRemoveIndex +
+                        ") is problematic for displayItems size (" + displayItems.size() + "). Position: " + position);
+                // Jika terjadi ketidaksesuaian, mungkin list tidak konsisten.
+                // Sebagai fallback, bisa panggil notifyDataSetChanged() setelah membersihkan dan membangun ulang
+                // displayItems berdasarkan state WeekGroup yang baru. Namun, ini akan menghilangkan animasi.
+            }
         }
-        notifyItemChanged(position);
+        notifyItemChanged(position); // Update icon expand dari week item
     }
 
 
     private void expandDay(int position, DayGroup dayGroup) {
-        if (dayGroup.getPrayerTimes() != null && !dayGroup.getPrayerTimes().isEmpty()) {
-            int childStartPosition = position + 1;
-            List<PrayerTimeDisplayWrapper> prayerWrappers = new ArrayList<>();
-            for(SinglePrayerTime spt : dayGroup.getPrayerTimes()){
-                prayerWrappers.add(new PrayerTimeDisplayWrapper(spt));
-            }
+        if (dayGroup.isExpanded() || dayGroup.getPrayerTimes() == null || dayGroup.getPrayerTimes().isEmpty()) {
+            Log.d(TAG, "expandDay: Already expanded or no prayer times for day at position " + position);
+            return;
+        }
+        dayGroup.setExpanded(true);
+
+        int childStartPosition = position + 1;
+        List<PrayerTimeDisplayWrapper> prayerWrappers = new ArrayList<>();
+        for (SinglePrayerTime spt : dayGroup.getPrayerTimes()) {
+            prayerWrappers.add(new PrayerTimeDisplayWrapper(spt));
+        }
+
+        if (childStartPosition <= displayItems.size()) { // Periksa batas
             displayItems.addAll(childStartPosition, prayerWrappers);
             notifyItemRangeInserted(childStartPosition, prayerWrappers.size());
-            notifyItemChanged(position);
+        } else {
+            Log.e(TAG, "expandDay: childStartPosition (" + childStartPosition +
+                    ") is out of bounds for displayItems size (" + displayItems.size() + "). Position: " + position);
+            dayGroup.setExpanded(false); // Kembalikan state
+            return;
         }
+        notifyItemChanged(position);
     }
 
     private void collapseDay(int position, DayGroup dayGroup) {
-        if (dayGroup.getPrayerTimes() != null && !dayGroup.getPrayerTimes().isEmpty()) {
-            int childCount = 0;
-            // Hitung berapa banyak prayer times (VIEW_TYPE_PRAYER) di bawah hari ini
-            for (int i = 0; i < dayGroup.getPrayerTimes().size(); i++) {
-                if ((position + 1 + i) < displayItems.size() &&
-                        displayItems.get(position + 1 + i).getItemType() == PrayerScheduleDisplayItem.VIEW_TYPE_PRAYER) {
-                    childCount++;
-                } else {
-                    break; // Berhenti jika bukan prayer item atau keluar batas
-                }
-            }
+        if (!dayGroup.isExpanded() || dayGroup.getPrayerTimes() == null || dayGroup.getPrayerTimes().isEmpty()) {
+            Log.d(TAG, "collapseDay: Already collapsed or no prayer times for day at position " + position);
+            return;
+        }
+        dayGroup.setExpanded(false);
 
-            if (childCount > 0) {
-                for (int i = 0; i < childCount; i++) {
-                    displayItems.remove(position + 1); // Hapus satu per satu dari posisi setelah parent
+        int prayerItemCount = dayGroup.getPrayerTimes().size();
+
+        if (prayerItemCount > 0) {
+            int startRemoveIndex = position + 1;
+            if (startRemoveIndex < displayItems.size() && (startRemoveIndex + prayerItemCount) <= displayItems.size()) {
+                for (int i = 0; i < prayerItemCount; i++) {
+                    if (startRemoveIndex < displayItems.size()){
+                        displayItems.remove(startRemoveIndex);
+                    } else {
+                        Log.e(TAG, "collapseDay: Attempted to remove from out of bounds index during loop.");
+                        break;
+                    }
                 }
-                notifyItemRangeRemoved(position + 1, childCount);
+                notifyItemRangeRemoved(startRemoveIndex, prayerItemCount);
+            } else {
+                Log.e(TAG, "collapseDay: Calculated prayerItemCount (" + prayerItemCount +
+                        ") or startRemoveIndex (" + startRemoveIndex +
+                        ") is problematic for displayItems size (" + displayItems.size() + "). Position: " + position);
             }
         }
         notifyItemChanged(position);
@@ -206,15 +291,25 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
         return displayItems.size();
     }
 
-    public void updateData(List<WeekGroup> newWeekGroups) {
+    public void updateData(List<WeekGroup> newWeekGroupsFromFragment) {
         displayItems.clear();
-        if (newWeekGroups != null) {
-            // Awalnya hanya tampilkan WeekGroup
-            displayItems.addAll(newWeekGroups);
+        if (newWeekGroupsFromFragment != null) {
+            // Saat data baru masuk, semua item minggu akan dalam keadaan collapsed (isExpanded=false dari constructor WeekGroup)
+            // Hanya WeekGroup yang ditambahkan ke displayItems pada awalnya.
+            for(WeekGroup wg : newWeekGroupsFromFragment){
+                // Pastikan state expanded direset jika objek WeekGroup digunakan kembali (seharusnya tidak jika dibuat baru)
+                wg.setExpanded(false);
+                // Jika DayGroup di dalamnya juga punya state expanded, reset juga.
+                for(DayGroup dg : wg.getDayGroups()){
+                    dg.setExpanded(false);
+                }
+                displayItems.add(wg);
+            }
         }
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // Setelah data di-reset, gunakan notifyDataSetChanged
     }
 
+    // ViewHolder untuk WeekGroup
     static class WeekViewHolder extends RecyclerView.ViewHolder {
         TextView tvWeekLabel;
         ImageView ivWeekExpandIcon;
@@ -225,6 +320,7 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
+    // ViewHolder untuk DayGroup
     static class DayViewHolder extends RecyclerView.ViewHolder {
         TextView tvDayLabel;
         ImageView ivDayExpandIcon;
@@ -235,15 +331,14 @@ public class ExpandableJadwalAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    // ViewHolder untuk SinglePrayerTime (menggunakan layout list_item_jadwal)
-    // Ini sama dengan ViewHolder di JadwalSholatAdapter
+    // ViewHolder untuk SinglePrayerTime (PrayerTimeViewHolder)
     static class PrayerTimeViewHolder extends RecyclerView.ViewHolder {
         TextView tvJudulJadwal, tvWaktuJadwal, tvTanggalItemJadwal;
         Button btnAktif, btnNonaktif;
         PrayerTimeViewHolder(View itemView) {
             super(itemView);
             tvJudulJadwal = itemView.findViewById(R.id.judul_jadwal);
-            tvTanggalItemJadwal = itemView.findViewById(R.id.tv_tanggal_item_jadwal);
+            tvTanggalItemJadwal = itemView.findViewById(R.id.tv_tanggal_item_jadwal); // Pastikan ID ini ada di list_item_jadwal.xml
             tvWaktuJadwal = itemView.findViewById(R.id.waktu_jadwal);
             btnAktif = itemView.findViewById(R.id.btn_aktif);
             btnNonaktif = itemView.findViewById(R.id.btn_nonaktif);

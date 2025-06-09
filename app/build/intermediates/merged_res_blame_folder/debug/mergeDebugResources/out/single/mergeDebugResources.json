@@ -1,19 +1,15 @@
 [
     {
-        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-xhdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-mdpi_ic_logo.webp.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-mdpi\\ic_logo.webp"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\layout_login.xml.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\layout\\login.xml"
     },
     {
-        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-mdpi_ic_logo.webp.flat",
-        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-mdpi\\ic_logo.webp"
-    },
-    {
-        "merged": "com.example.mi_zan.app-debug-37:/layout_list_item_day_group.xml.flat",
-        "source": "com.example.mi_zan.app-main-39:/layout/list_item_day_group.xml"
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\anim_bottom_navigation_translate.xml.flat",
@@ -32,20 +28,20 @@
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\drawable\\bottom_navigation_backround.xml"
     },
     {
-        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\layout_jadwal_sholat_fragment.xml.flat",
-        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\layout\\jadwal_sholat_fragment.xml"
-    },
-    {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_ic_maps.xml.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\drawable\\ic_maps.xml"
     },
     {
-        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_ic_jurnal.xml.flat",
-        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\drawable\\ic_jurnal.xml"
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\layout_jadwal_sholat_fragment.xml.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\layout\\jadwal_sholat_fragment.xml"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_ic_quotes.xml.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\drawable\\ic_quotes.xml"
+    },
+    {
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_ic_jurnal.xml.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\drawable\\ic_jurnal.xml"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-xxhdpi_ic_logo_round.webp.flat",
@@ -64,12 +60,12 @@
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\menu\\bottom_navigation_menu.xml"
     },
     {
-        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-mdpi_ic_logo_round.webp.flat",
-        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-mdpi\\ic_logo_round.webp"
-    },
-    {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\anim_masuk_dari_kanan.xml.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\anim\\masuk_dari_kanan.xml"
+    },
+    {
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-mdpi_ic_logo_round.webp.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-mdpi\\ic_logo_round.webp"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_ic_logo_foreground.xml.flat",
@@ -98,6 +94,10 @@
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_rounded_gradient_categoris.xml.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\drawable\\rounded_gradient_categoris.xml"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-37:/layout_profile_fragment.xml.flat",
+        "source": "com.example.mi_zan.app-main-39:/layout/profile_fragment.xml"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-mdpi_ic_launcher.webp.flat",
@@ -184,6 +184,10 @@
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\layout\\maps_fragment.xml"
     },
     {
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\layout_list_item_week_group.xml.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\layout\\list_item_week_group.xml"
+    },
+    {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-xhdpi_ic_logo.webp.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-xhdpi\\ic_logo.webp"
     },
@@ -232,16 +236,16 @@
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\layout\\camera_fragment.xml"
     },
     {
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\layout_list_item_day_group.xml.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\layout\\list_item_day_group.xml"
+    },
+    {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_ic_camera.xml.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\drawable\\ic_camera.xml"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-39:\\mipmap-xhdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "com.example.mi_zan.app-debug-37:/layout_list_item_week_group.xml.flat",
-        "source": "com.example.mi_zan.app-main-39:/layout/list_item_week_group.xml"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-37:\\drawable_ic_doa.xml.flat",
