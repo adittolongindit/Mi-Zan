@@ -38,11 +38,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
-    private static final String TAG = "MapsFragment"; // Untuk logging
+    private static final String TAG = "MapsFragment";
     private GoogleMap mMap;
-    private GooglePlacesApiService placesApiService; // Ganti dengan interface baru
-    private FusedLocationProviderClient fusedLocationClient; // Pindahkan ke level class
-    private List<Marker> mosqueMarkers = new ArrayList<>(); // Untuk menyimpan marker masjid
+    private GooglePlacesApiService placesApiService;
+    private FusedLocationProviderClient fusedLocationClient;
+    private List<Marker> mosqueMarkers = new ArrayList<>();
     private static final String GOOGLE_PLACES_API_KEY = "AIzaSyAiK0GW26eQyYfOjj_NFHKpJ5tuqaMO2zY";
 
     @Override
@@ -101,11 +101,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         double longitude = location.getLongitude();
                         LatLng userLocation = new LatLng(latitude, longitude);
 
-                        // Hapus marker user sebelumnya jika ada (jika method ini dipanggil ulang)
-                        // mMap.clear(); // Ini akan menghapus semua marker, termasuk masjid. Handle dengan lebih baik jika perlu.
-
-                        // Tambahkan marker untuk lokasi pengguna (atau gunakan fitur MyLocation bawaan)
-                        // mMap.addMarker(new MarkerOptions().position(userLocation).title("Lokasi Saya"));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14)); // Zoom level disesuaikan
 
                         fetchNearbyMosques(latitude, longitude);
@@ -134,12 +129,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 Arrays.asList("mosque"), // Tipe tempat: masjid
                 20, // Jumlah hasil maksimal
                 restriction
-                // Jika ingin mengurutkan berdasarkan jarak terdekat:
-                // tambahkan field rankPreference di SearchNearbyRequestBody
-                // dan set requestBody.setRankPreference("DISTANCE");
-                // Namun, "DISTANCE" rankPreference mengharuskan Anda TIDAK menggunakan radius
-                // atau types (atau hanya satu type). Jadi untuk "mosque" lebih baik tanpa rankPreference
-                // dan biarkan diurutkan berdasarkan relevansi/prominens dalam radius.
         );
 
         // Field mask menentukan field mana saja yang ingin Anda dapatkan dari API
