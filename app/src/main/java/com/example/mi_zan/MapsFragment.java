@@ -101,7 +101,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         double longitude = location.getLongitude();
                         LatLng userLocation = new LatLng(latitude, longitude);
 
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14)); // Zoom level disesuaikan
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14));
 
                         fetchNearbyMosques(latitude, longitude);
 
@@ -131,7 +131,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 restriction
         );
 
-        // Field mask menentukan field mana saja yang ingin Anda dapatkan dari API
         String fieldMask = "places.id,places.displayName,places.formattedAddress,places.location";
 
         placesApiService.searchNearbyPlaces(GOOGLE_PLACES_API_KEY, fieldMask, requestBody)
@@ -187,7 +186,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     mMap.setMyLocationEnabled(true);
                     mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 }
-                getUserLocationAndDisplayMasjid(); // Coba lagi mendapatkan lokasi setelah izin diberikan
+                getUserLocationAndDisplayMasjid();
             } else {
                 Log.w(TAG, "Izin lokasi ditolak");
                 // Handle kasus izin ditolak, mungkin tampilkan pesan ke pengguna
