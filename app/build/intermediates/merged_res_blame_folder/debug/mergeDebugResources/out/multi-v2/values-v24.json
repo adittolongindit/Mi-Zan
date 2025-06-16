@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.mi_zan.app-mergeDebugResources-35:/values-v24/values-v24.xml",
+            "outputFile": "com.example.mi_zan.app-mergeDebugResources-44:/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\yoga\\.gradle\\caches\\8.10.2\\transforms\\b03f49ee9c4a76696a88014e26467dfd\\transformed\\appcompat-1.7.0\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\yoga\\.gradle\\caches\\8.10.2\\transforms\\471f68293c2b4384ba08dbc7adcf1771\\transformed\\appcompat-1.7.0\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\yoga\\.gradle\\caches\\8.10.2\\transforms\\b16362260e53b027d8d49fd9b3ed8fe6\\transformed\\material-1.5.0\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\yoga\\.gradle\\caches\\8.10.2\\transforms\\bd8f8474b43b0237e682d5ec15ee5507\\transformed\\material-1.5.0\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,9,12,15",
                         "startColumns": "4,4,4,4,4,4,4,4",

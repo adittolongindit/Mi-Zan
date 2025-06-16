@@ -24,4 +24,8 @@
 
 
     <color name="logout_start">#E20909</color> <!-- Biru Tua -->
+
+    <color name="light_gray">#E0E0E0</color>
+
+    <color name="purple_500">#6200EE</color>
 </resources>

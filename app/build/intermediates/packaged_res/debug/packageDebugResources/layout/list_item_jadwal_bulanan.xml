@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_daily"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_tanggal_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="12dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Minggu, 01 Juni 2025" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:stretchColumns="1">
+            <TableRow>
+                <TextView android:text="Imsak" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_imsak_time" tools:text="04:24" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_imsak" style="@style/AlarmIconStyle"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="4dp">
+                <TextView android:text="Subuh" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_subuh_time" tools:text="04:34" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_shubuh" style="@style/AlarmIconStyle"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="4dp">
+                <TextView android:text="Terbit" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_terbit_time" tools:text="05:53" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_terbit" style="@style/AlarmIconStyle"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="4dp">
+                <TextView android:text="Dhuha" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_dhuha_time" tools:text="06:17" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_dhuha" style="@style/AlarmIconStyle"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="4dp">
+                <TextView android:text="Dzuhur" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_dzuhur_time" tools:text="11:49" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_dzuhur" style="@style/AlarmIconStyle"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="4dp">
+                <TextView android:text="Ashar" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_ashar_time" tools:text="15:11" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_ashar" style="@style/AlarmIconStyle"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="4dp">
+                <TextView android:text="Maghrib" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_maghrib_time" tools:text="17:42" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_maghrib" style="@style/AlarmIconStyle"/>
+            </TableRow>
+            <TableRow android:layout_marginTop="4dp">
+                <TextView android:text="Isya" android:layout_gravity="center_vertical"/>
+                <TextView android:id="@+id/tv_isya_time" tools:text="18:56" android:layout_gravity="center_vertical"/>
+                <ImageView android:id="@+id/iv_alarm_isya" style="@style/AlarmIconStyle"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

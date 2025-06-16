@@ -71,6 +71,7 @@ animator mtrl_fab_transformation_sheet_collapse_spec
 animator mtrl_fab_transformation_sheet_expand_spec
 attr SharedValue
 attr SharedValueId
+attr action
 attr actionBarDivider
 attr actionBarItemBackground
 attr actionBarPopupTheme
@@ -123,6 +124,7 @@ attr animationMode
 attr appBarLayoutStyle
 attr applyMotionScene
 attr arcMode
+attr argType
 attr arrowHeadLength
 attr arrowShaftLength
 attr attributeName
@@ -392,6 +394,8 @@ attr customNavigationLayout
 attr customPixelDimension
 attr customReference
 attr customStringValue
+attr data
+attr dataPattern
 attr dayInvalidStyle
 attr daySelectedStyle
 attr dayStyle
@@ -402,6 +406,7 @@ attr defaultState
 attr deltaPolarAngle
 attr deltaPolarRadius
 attr deriveConstraintsFrom
+attr destination
 attr dialogCornerRadius
 attr dialogPreferredPadding
 attr dialogTheme
@@ -452,6 +457,7 @@ attr endIconTintMode
 attr enforceMaterialTheme
 attr enforceTextAppearance
 attr ensureMinTouchTargetSize
+attr enterAnim
 attr errorContentDescription
 attr errorEnabled
 attr errorIconDrawable
@@ -459,6 +465,7 @@ attr errorIconTint
 attr errorIconTintMode
 attr errorTextAppearance
 attr errorTextColor
+attr exitAnim
 attr expandActivityOverflowButtonDrawable
 attr expanded
 attr expandedHintEnabled
@@ -537,6 +544,7 @@ attr framePosition
 attr gapBetweenBars
 attr gestureInsetBottomIgnored
 attr goIcon
+attr graph
 attr grid_columnWeights
 attr grid_columns
 attr grid_horizontalGaps
@@ -641,6 +649,7 @@ attr latLngBoundsNorthEastLatitude
 attr latLngBoundsNorthEastLongitude
 attr latLngBoundsSouthWestLatitude
 attr latLngBoundsSouthWestLongitude
+attr launchSingleTop
 attr layout
 attr layoutDescription
 attr layoutDuringTransition
@@ -738,6 +747,28 @@ attr listPreferredItemPaddingStart
 attr liteMode
 attr logo
 attr logoDescription
+attr lottieAnimationViewStyle
+attr lottie_asyncUpdates
+attr lottie_autoPlay
+attr lottie_cacheComposition
+attr lottie_clipTextToBoundingBox
+attr lottie_clipToCompositionBounds
+attr lottie_colorFilter
+attr lottie_defaultFontFileExtension
+attr lottie_enableMergePathsForKitKatAndAbove
+attr lottie_fallbackRes
+attr lottie_fileName
+attr lottie_ignoreDisabledSystemAnimations
+attr lottie_imageAssetsFolder
+attr lottie_loop
+attr lottie_progress
+attr lottie_rawRes
+attr lottie_renderMode
+attr lottie_repeatCount
+attr lottie_repeatMode
+attr lottie_speed
+attr lottie_url
+attr lottie_useCompositionFrameRate
 attr mapId
 attr mapType
 attr marginHorizontal
@@ -791,6 +822,7 @@ attr measureWithLargestChild
 attr menu
 attr menuGravity
 attr methodName
+attr mimeType
 attr minHeight
 attr minHideDelay
 attr minSeparation
@@ -832,6 +864,7 @@ attr motion_postLayoutCollision
 attr motion_triggerOnCollision
 attr moveWhenScrollAtTop
 attr multiChoiceItemLayout
+attr navGraph
 attr navigationContentDescription
 attr navigationIcon
 attr navigationIconTint
@@ -841,6 +874,7 @@ attr navigationViewStyle
 attr nestedScrollFlags
 attr nestedScrollViewStyle
 attr nestedScrollable
+attr nullable
 attr number
 attr numericModifiers
 attr onCross
@@ -881,6 +915,11 @@ attr placeholderTextAppearance
 attr placeholderTextColor
 attr placeholder_emptyVisibility
 attr polarRelativeTo
+attr popEnterAnim
+attr popExitAnim
+attr popUpTo
+attr popUpToInclusive
+attr popUpToSaveState
 attr popupMenuBackground
 attr popupMenuStyle
 attr popupTheme
@@ -912,11 +951,13 @@ attr region_heightLessThan
 attr region_heightMoreThan
 attr region_widthLessThan
 attr region_widthMoreThan
+attr restoreState
 attr reverseLayout
 attr rippleColor
 attr rotationCenterId
 attr round
 attr roundPercent
+attr route
 attr saturation
 attr scaleFromTextSize
 attr scopeUris
@@ -968,6 +1009,7 @@ attr springStopThreshold
 attr srcCompat
 attr stackFromEnd
 attr staggered
+attr startDestination
 attr startIconCheckable
 attr startIconContentDescription
 attr startIconDrawable
@@ -1033,6 +1075,7 @@ attr tabTextAppearance
 attr tabTextColor
 attr tabUnboundedRipple
 attr targetId
+attr targetPackage
 attr telltales_tailColor
 attr telltales_tailScale
 attr telltales_velocityMode
@@ -1175,6 +1218,7 @@ attr uiTiltGestures
 attr uiZoomControls
 attr uiZoomGestures
 attr upDuration
+attr uri
 attr useCompatPadding
 attr useMaterialThemeColors
 attr useViewLifecycle
@@ -1344,6 +1388,7 @@ color foreground_material_dark
 color foreground_material_light
 color highlighted_text_material_dark
 color highlighted_text_material_light
+color light_gray
 color logout_start
 color m3_appbar_overlay_color
 color m3_assist_chip_icon_tint_color
@@ -1821,6 +1866,7 @@ color primary_text_default_material_dark
 color primary_text_default_material_light
 color primary_text_disabled_material_dark
 color primary_text_disabled_material_light
+color purple_500
 color radiobutton_themeable_attribute_color
 color ripple_material_dark
 color ripple_material_light
@@ -2545,6 +2591,9 @@ drawable googleg_standard_color_18
 drawable gradient_backround
 drawable gradient_card
 drawable gradient_categories
+drawable ic_alarm_off
+drawable ic_alarm_on
+drawable ic_arrow_back
 drawable ic_arrow_down
 drawable ic_arrow_up
 drawable ic_call_answer
@@ -2563,6 +2612,7 @@ drawable ic_jurnal
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_location
 drawable ic_logo_background
 drawable ic_logo_foreground
 drawable ic_m3_chip_check
@@ -2576,6 +2626,7 @@ drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_profil_home
 drawable ic_quotes
+drawable ic_sejadah
 drawable ic_user
 drawable m3_appbar_background
 drawable m3_popupmenu_background_overlay
@@ -2708,6 +2759,7 @@ id animateToEnd
 id animateToStart
 id antiClockwise
 id anticipate
+id app_bar_layout_home
 id arc
 id asConfigured
 id async
@@ -2715,6 +2767,7 @@ id auto
 id autoComplete
 id autoCompleteToEnd
 id autoCompleteToStart
+id automatic
 id axisRelative
 id background_image
 id barrier
@@ -2730,22 +2783,18 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
-id btn_aktif
+id btn_change_location_home
 id btn_ganti_tema
 id btn_logout
-id btn_nonaktif
+id btn_monthly_schedule
 id btn_notification
-id btn_search_kota
-id btn_tampilkan_jadwal
-id btn_toggle_filter
 id buttonPanel
 id cache_measures
 id callMeasure
 id camera_button
 id camera_title
 id cancel_button
-id card_filter
-id card_item_jadwal
+id card_daily
 id card_profile
 id card_quotes
 id carryVelocity
@@ -2766,6 +2815,7 @@ id chip3
 id chip_group
 id chronometer
 id circle_center
+id city_selection_container
 id clear_text
 id clip_horizontal
 id clip_vertical
@@ -2808,6 +2858,7 @@ id disableHome
 id disableIntraAutoTransition
 id disablePostScroll
 id disableScroll
+id disabled
 id disjoint
 id doa_button
 id dragAnticlockwise
@@ -2826,11 +2877,11 @@ id east
 id edit_query
 id edit_text_id
 id elastic
+id enabled
 id end
 id endToStart
 id enterAlways
 id enterAlwaysCollapsed
-id et_search_kota
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
@@ -2856,6 +2907,7 @@ id group_divider
 id grouping
 id groups
 id guideline
+id hardware
 id header_card
 id header_text
 id header_title
@@ -2863,6 +2915,7 @@ id hide_ime_id
 id hideable
 id home
 id homeAsUp
+id home_view_container
 id honorRequest
 id horizontal
 id horizontal_only
@@ -2884,17 +2937,22 @@ id item_home
 id item_maps
 id item_profile
 id item_touch_helper_previous_elevation
-id iv_day_expand_icon
-id iv_week_expand_icon
+id iv_alarm_ashar
+id iv_alarm_dhuha
+id iv_alarm_dzuhur
+id iv_alarm_imsak
+id iv_alarm_isya
+id iv_alarm_maghrib
+id iv_alarm_shubuh
+id iv_alarm_terbit
+id iv_alarm_toggle
 id jadwal_sholat_button
-id judul_jadwal
 id jumpToEnd
 id jumpToStart
 id jurnal_butto
 id jurnal_button
 id labeled
 id layout
-id layout_filter_content
 id left
 id leftToRight
 id legacy
@@ -2905,7 +2963,9 @@ id linear
 id linearLayout_topbar
 id listMode
 id list_item
+id loading_animation_view
 id login_button
+id lottie_layer_name
 id map
 id maps_title
 id masjid_button
@@ -2940,6 +3000,7 @@ id month_navigation_fragment_toggle
 id month_navigation_next
 id month_navigation_previous
 id month_title
+id monthly_schedule_container
 id motion_base
 id mtrl_anchor_parent
 id mtrl_calendar_day_selector_frame
@@ -2965,6 +3026,7 @@ id mtrl_picker_text_input_range_start
 id mtrl_picker_title_text
 id mtrl_view_tag_bottom_padding
 id multiply
+id nav_controller_view_tag
 id navigation_bar_item_active_indicator_view
 id navigation_bar_item_icon_container
 id navigation_bar_item_icon_view
@@ -3020,6 +3082,8 @@ id ratio
 id rectangles
 id register_link
 id report_drawn
+id restart
+id reverse
 id reverseSawtooth
 id right
 id rightToLeft
@@ -3027,7 +3091,9 @@ id right_icon
 id right_side
 id rounded
 id row_index_key
-id rv_jadwal_sholat
+id rv_cities
+id rv_jadwal_bulanan
+id rv_jadwal_harian
 id satellite
 id save_non_transition_alpha
 id save_overlay_view
@@ -3048,6 +3114,7 @@ id search_go_btn
 id search_mag_icon
 id search_plate
 id search_src_text
+id search_view_city
 id search_voice_btn
 id select_dialog_listview
 id selected
@@ -3066,12 +3133,10 @@ id snackbar_action
 id snackbar_text
 id snap
 id snapMargins
+id software
 id south
 id spacer
 id special_effects_controller_view_tag
-id spinner_bulan
-id spinner_kota
-id spinner_tahun
 id spline
 id split_action_bar
 id spread
@@ -3134,6 +3199,8 @@ id title
 id titleDividerNoCustom
 id title_template
 id toggle
+id toolbar_city_selection
+id toolbar_monthly
 id top
 id topPanel
 id touch_outside
@@ -3145,10 +3212,20 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
-id tv_current_location_myquran
-id tv_day_label
-id tv_tanggal_item_jadwal
-id tv_week_label
+id tv_ashar_time
+id tv_countdown
+id tv_current_date
+id tv_dhuha_time
+id tv_dzuhur_time
+id tv_imsak_time
+id tv_isya_time
+id tv_maghrib_time
+id tv_next_prayer
+id tv_prayer_name
+id tv_prayer_time
+id tv_subuh_time
+id tv_tanggal_header
+id tv_terbit_time
 id unchecked
 id uniform
 id unlabeled
@@ -3161,13 +3238,13 @@ id vertical
 id vertical_only
 id view_offset_helper
 id view_transition
+id view_tree_disjoint_parent
 id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
 id visible
 id visible_removing_fragment_view_tag
-id waktu_jadwal
 id west
 id wide
 id withText
@@ -3287,9 +3364,8 @@ layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
 layout item_next_sholat
 layout jadwal_sholat_fragment
-layout list_item_day_group
-layout list_item_jadwal
-layout list_item_week_group
+layout list_item_jadwal_bulanan
+layout list_item_jadwal_harian
 layout list_jadwal_sholat
 layout login
 layout m3_alert_dialog
@@ -3371,6 +3447,8 @@ mipmap ic_launcher_round
 mipmap ic_logo
 mipmap ic_logo_round
 plurals mtrl_badge_content_description
+raw adzan
+raw loading_animation
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -3529,6 +3607,7 @@ string path_password_eye_mask_visible
 string path_password_strike_through
 string search_menu_title
 string status_bar_notification_info_overflow
+style AlarmIconStyle
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style AndroidThemeColorAccentYellow
@@ -4557,6 +4636,7 @@ styleable ActionMenuItemView android_minWidth
 styleable ActionMenuView
 styleable ActionMode background backgroundSplit closeItemLayout height subtitleTextStyle titleTextStyle
 styleable ActivityChooserView expandActivityOverflowButtonDrawable initialActivityCount
+styleable ActivityNavigator android_name action data dataPattern targetPackage
 styleable AlertDialog android_layout buttonIconDimen buttonPanelSideLayout listItemLayout listLayout multiChoiceItemLayout showTitle singleChoiceItemLayout
 styleable AnimatedStateListDrawableCompat android_dither android_visible android_variablePadding android_constantSize android_enterFadeDuration android_exitFadeDuration
 styleable AnimatedStateListDrawableItem android_id android_drawable
@@ -4629,6 +4709,7 @@ styleable LinearLayoutCompat_Layout android_layout_gravity android_layout_width 
 styleable LinearProgressIndicator indeterminateAnimationType indicatorDirectionLinear
 styleable ListPopupWindow android_dropDownHorizontalOffset android_dropDownVerticalOffset
 styleable LoadingImageView circleCrop imageAspectRatio imageAspectRatioAdjust
+styleable LottieAnimationView lottie_asyncUpdates lottie_autoPlay lottie_cacheComposition lottie_clipTextToBoundingBox lottie_clipToCompositionBounds lottie_colorFilter lottie_defaultFontFileExtension lottie_enableMergePathsForKitKatAndAbove lottie_fallbackRes lottie_fileName lottie_ignoreDisabledSystemAnimations lottie_imageAssetsFolder lottie_loop lottie_progress lottie_rawRes lottie_renderMode lottie_repeatCount lottie_repeatMode lottie_speed lottie_url lottie_useCompositionFrameRate
 styleable MapAttrs ambientEnabled backgroundColor cameraBearing cameraMaxZoomPreference cameraMinZoomPreference cameraTargetLat cameraTargetLng cameraTilt cameraZoom latLngBoundsNorthEastLatitude latLngBoundsNorthEastLongitude latLngBoundsSouthWestLatitude latLngBoundsSouthWestLongitude liteMode mapId mapType uiCompass uiMapToolbar uiRotateGestures uiScrollGestures uiScrollGesturesDuringRotateOrZoom uiTiltGestures uiZoomControls uiZoomGestures useViewLifecycle zOrderOnTop
 styleable MaterialAlertDialog backgroundInsetBottom backgroundInsetEnd backgroundInsetStart backgroundInsetTop
 styleable MaterialAlertDialogTheme materialAlertDialogBodyTextStyle materialAlertDialogButtonSpacerVisibility materialAlertDialogTheme materialAlertDialogTitleIconStyle materialAlertDialogTitlePanelStyle materialAlertDialogTitleTextStyle
@@ -4657,10 +4738,17 @@ styleable MotionLabel android_textSize android_typeface android_textStyle androi
 styleable MotionLayout applyMotionScene currentState layoutDescription motionDebug motionProgress showPaths
 styleable MotionScene defaultDuration layoutDuringTransition
 styleable MotionTelltales telltales_tailColor telltales_tailScale telltales_velocityMode
+styleable NavAction android_id destination enterAnim exitAnim launchSingleTop popEnterAnim popExitAnim popUpTo popUpToInclusive popUpToSaveState restoreState
+styleable NavArgument android_name android_defaultValue argType nullable
+styleable NavDeepLink android_autoVerify action mimeType uri
+styleable NavGraphNavigator startDestination
+styleable NavHost navGraph
+styleable NavInclude graph
 styleable NavigationBarActiveIndicator android_height android_width android_color marginHorizontal shapeAppearance
 styleable NavigationBarView backgroundTint elevation itemActiveIndicatorStyle itemBackground itemIconSize itemIconTint itemPaddingBottom itemPaddingTop itemRippleColor itemTextAppearanceActive itemTextAppearanceInactive itemTextColor labelVisibilityMode menu
 styleable NavigationRailView headerLayout itemMinHeight menuGravity
 styleable NavigationView android_layout_gravity android_background android_fitsSystemWindows android_maxWidth bottomInsetScrimEnabled dividerInsetEnd dividerInsetStart drawerLayoutCornerSize elevation headerLayout itemBackground itemHorizontalPadding itemIconPadding itemIconSize itemIconTint itemMaxLines itemShapeAppearance itemShapeAppearanceOverlay itemShapeFillColor itemShapeInsetBottom itemShapeInsetEnd itemShapeInsetStart itemShapeInsetTop itemTextAppearance itemTextColor itemVerticalPadding menu shapeAppearance shapeAppearanceOverlay subheaderColor subheaderInsetEnd subheaderInsetStart subheaderTextAppearance topInsetScrimEnabled
+styleable Navigator android_label android_id route
 styleable OnClick clickAction targetId
 styleable OnSwipe autoCompleteMode dragDirection dragScale dragThreshold limitBoundsTo maxAcceleration maxVelocity moveWhenScrollAtTop nestedScrollFlags onTouchUp rotationCenterId springBoundary springDamping springMass springStiffness springStopThreshold touchAnchorId touchAnchorSide touchRegionId
 styleable PopupWindow android_popupBackground android_popupAnimationStyle overlapAnchor

@@ -10,13 +10,23 @@
     <color name="colorEndGradient">#7EC4CF</color>
     <color name="colorPrimary">#3F8DB6</color>
     <color name="colorStartGradient">#1E3A58</color>
+    <color name="light_gray">#E0E0E0</color>
     <color name="logout_start">#E20909</color>
+    <color name="purple_500">#6200EE</color>
     <color name="textPrimary">#FFFFFF</color>
     <color name="textSecondary">#B0B0B0</color>
     <color name="text_primary">#000000</color>
     <color name="white">#FFFFFFFF</color>
     <string name="app_name" translatable="false">MI-Zan</string>
     <string name="google_maps_key" translatable="false">AIzaSyAiK0GW26eQyYfOjj_NFHKpJ5tuqaMO2zY</string>
+    <style name="AlarmIconStyle">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/ic_alarm_off</item>
+    </style>
     <style name="AppThemeAnimationOverlay" parent="ThemeOverlay.Material3">
         <item name="android:windowAnimationStyle">@android:style/Animation.Activity</item>
     </style>
