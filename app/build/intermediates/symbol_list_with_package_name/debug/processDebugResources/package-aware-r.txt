@@ -2615,6 +2615,8 @@ drawable ic_launcher_foreground
 drawable ic_location
 drawable ic_logo_background
 drawable ic_logo_foreground
+drawable ic_logo_mizan_background
+drawable ic_logo_mizan_foreground
 drawable ic_m3_chip_check
 drawable ic_m3_chip_checked_circle
 drawable ic_m3_chip_close
@@ -2628,6 +2630,7 @@ drawable ic_profil_home
 drawable ic_quotes
 drawable ic_sejadah
 drawable ic_user
+drawable logo_mi_zan
 drawable m3_appbar_background
 drawable m3_popupmenu_background_overlay
 drawable m3_radiobutton_ripple
@@ -3444,8 +3447,8 @@ layout text_view_without_line_height
 menu bottom_navigation_menu
 mipmap ic_launcher
 mipmap ic_launcher_round
-mipmap ic_logo
-mipmap ic_logo_round
+mipmap ic_logo_mizan
+mipmap ic_logo_mizan_round
 plurals mtrl_badge_content_description
 raw adzan
 raw loading_animation

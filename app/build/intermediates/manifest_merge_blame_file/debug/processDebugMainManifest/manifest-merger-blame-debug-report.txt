@@ -84,12 +84,12 @@
 48        android:extractNativeLibs="false"
 49        android:fullBackupContent="@xml/backup_rules"
 49-->C:\Users\yoga\AndroidStudioProjects\Tes\app\src\main\AndroidManifest.xml:19:9-54
-50        android:icon="@mipmap/ic_logo"
-50-->C:\Users\yoga\AndroidStudioProjects\Tes\app\src\main\AndroidManifest.xml:20:9-39
+50        android:icon="@mipmap/ic_logo_mizan"
+50-->C:\Users\yoga\AndroidStudioProjects\Tes\app\src\main\AndroidManifest.xml:20:9-45
 51        android:label="@string/app_name"
 51-->C:\Users\yoga\AndroidStudioProjects\Tes\app\src\main\AndroidManifest.xml:21:9-41
-52        android:roundIcon="@mipmap/ic_logo_round"
-52-->C:\Users\yoga\AndroidStudioProjects\Tes\app\src\main\AndroidManifest.xml:22:9-50
+52        android:roundIcon="@mipmap/ic_logo_mizan_round"
+52-->C:\Users\yoga\AndroidStudioProjects\Tes\app\src\main\AndroidManifest.xml:22:9-56
 53        android:supportsRtl="true"
 53-->C:\Users\yoga\AndroidStudioProjects\Tes\app\src\main\AndroidManifest.xml:23:9-35
 54        android:testOnly="true"

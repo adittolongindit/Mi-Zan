@@ -2614,6 +2614,8 @@ int drawable ic_launcher_foreground 0x7f070092
 int drawable ic_location 0x7f070093
 int drawable ic_logo_background 0x7f070094
 int drawable ic_logo_foreground 0x7f070095
+int drawable ic_logo_mizan_background 0x7f0700d3
+int drawable ic_logo_mizan_foreground 0x7f0700d4
 int drawable ic_m3_chip_check 0x7f070096
 int drawable ic_m3_chip_checked_circle 0x7f070097
 int drawable ic_m3_chip_close 0x7f070098
@@ -2627,6 +2629,7 @@ int drawable ic_profil_home 0x7f07009f
 int drawable ic_quotes 0x7f0700a0
 int drawable ic_sejadah 0x7f0700a1
 int drawable ic_user 0x7f0700a2
+int drawable logo_mi_zan 0x7f0700d5
 int drawable m3_appbar_background 0x7f0700a3
 int drawable m3_popupmenu_background_overlay 0x7f0700a4
 int drawable m3_radiobutton_ripple 0x7f0700a5
@@ -3443,8 +3446,8 @@ int layout text_view_without_line_height 0x7f0b007f
 int menu bottom_navigation_menu 0x7f0c0000
 int mipmap ic_launcher 0x7f0d0000
 int mipmap ic_launcher_round 0x7f0d0001
-int mipmap ic_logo 0x7f0d0002
-int mipmap ic_logo_round 0x7f0d0003
+int mipmap ic_logo_mizan 0x7f0d0004
+int mipmap ic_logo_mizan_round 0x7f0d0005
 int plurals mtrl_badge_content_description 0x7f0e0000
 int raw adzan 0x7f0f0000
 int raw loading_animation 0x7f0f0001

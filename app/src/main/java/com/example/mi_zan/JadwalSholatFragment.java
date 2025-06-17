@@ -234,7 +234,7 @@ public class JadwalSholatFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<LokasiResponse> call, @NonNull Throwable t) {
                 if(isAdded()) {
-                    Toast.makeText(getContext(), "Error API pencarian kota. Menggunakan lokasi default.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Lokasi gagal didapatkan. Menggunakan lokasi default.", Toast.LENGTH_LONG).show();
                     switchToView(ViewState.HOME);
                 }
             }

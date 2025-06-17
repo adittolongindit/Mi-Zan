@@ -47,9 +47,9 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_logo"
+        android:icon="@mipmap/ic_logo_mizan"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_logo_round"
+        android:roundIcon="@mipmap/ic_logo_mizan_round"
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.MIZan" >

@@ -22,12 +22,10 @@ public class SessionManager {
     }
 
     public String getSavedLocationId() {
-        // Default ke Jakarta jika belum ada data
         return pref.getString(KEY_LOCATION_ID, "1301");
     }
 
     public String getSavedLocationName() {
-        // Default ke Jakarta jika belum ada data
         return pref.getString(KEY_LOCATION_NAME, "KOTA JAKARTA");
     }
 }
