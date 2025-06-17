@@ -176,10 +176,6 @@
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-48:\\drawable\\ic_logo_background.xml"
     },
     {
-        "merged": "com.example.mi_zan.app-debug-46:/drawable_ic_sejadah.xml.flat",
-        "source": "com.example.mi_zan.app-main-48:/drawable/ic_sejadah.xml"
-    },
-    {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-46:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-48:\\mipmap-xxxhdpi\\ic_launcher.webp"
     },
@@ -222,6 +218,10 @@
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-46:\\layout_jadwal_sholat_fragment.xml.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-48:\\layout\\jadwal_sholat_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-46:\\drawable_ic_sejadah.xml.flat",
+        "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-48:\\drawable\\ic_sejadah.xml"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-46:\\drawable_ic_jadwal_sholat.xml.flat",
@@ -290,6 +290,10 @@
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-46:\\raw_loading_animation.json.flat",
         "source": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-main-48:\\raw\\loading_animation.json"
+    },
+    {
+        "merged": "com.example.mi_zan.app-debug-46:/layout_jadwal_sholat_fragment.xml.flat",
+        "source": "com.example.mi_zan.app-main-48:/layout/jadwal_sholat_fragment.xml"
     },
     {
         "merged": "C:\\Users\\yoga\\.gradle\\daemon\\8.10.2\\com.example.mi_zan.app-debug-46:\\anim_keluar_ke_kanan.xml.flat",
